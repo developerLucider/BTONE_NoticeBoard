@@ -24,48 +24,47 @@
 					<p class="mb-5" data-aos="fade-up">글 작성 페이지입니다.</p>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 
 	<div class="section">
 		<div class="container">
 			<div class="row">
-				<div class="col-12"	data-aos="fade-up" data-aos-delay="0">
-					
+				<div class="col-12" data-aos="fade-up" data-aos-delay="0">
+
 					<h2 class="heading mb-5">글쓰기</h2>
 				</div>
 			</div>
-				<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-					<form action="#">
-						<div class="row">
-							<!-- 비회원 작성시 활용해도될듯합니다. 혹시나해서 남겼어요 -->
-							<div class="col-6 mb-3">
-								<input type="text" class="form-control" placeholder="Your ID">
-							</div>
-							<div class="col-6 mb-3">
-								<input type="email" class="form-control" placeholder="Your Password">
-							</div>
-							<!-- 비회원 -->
-							
-							<div class="col-12 mb-3">
-								<input type="text" class="form-control" placeholder="Category">
-							</div>
-							<div class="col-12 mb-3">
-								<input type="text" class="form-control" placeholder="title">
-							</div>
-							<div class="col-12 mb-3">
-								<textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
-							</div>
+			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+				<form action="#">
+					<div class="row">
 
-							<div class="col-12">
-								<input type="submit" value="Send Message" class="btn btn-primary">
-							</div>
+						<div class="col-12 mb-3">
+							<select id="category" name="category" class="form-control">
+								<option>-- 분류 --</option>
+								<option value="one">One</option>
+								<option value="two">Two</option>
+								<option value="three">Three</option>
+							</select>
 						</div>
-					</form>
-				</div>
+						<div class="col-12 mb-3">
+							<input type="text" class="form-control" placeholder="제목" name="title">
+						</div>
+						<div class="col-12 mb-3">
+							<textarea name="content" id="content" cols="30" rows="7" class="form-control"
+								placeholder="내용을 작성해주세요."></textarea>
+						</div>
+
+						<div class="col-12">
+							<input type="submit" value="Send Message" class="btn btn-primary">
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
-	</div> <!-- /.untree_co-section -->
-	
+	</div>
+</div>
+<!-- /.untree_co-section -->
+
 </div>
 </html>

@@ -1,0 +1,21 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+      
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.11:3306/board?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: test
+    password: btone
+   
+  thymeleaf:
+     cache : false
+  
+mybatis:
+  mapper-locations:
+  - classpath:/mapper/**/*.xml

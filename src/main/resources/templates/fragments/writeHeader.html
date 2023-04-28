@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<div th:fragment="writeHeaderFragment">
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+
+	<nav class="site-nav mt-3">
+		<div class="container">
+
+			<div class="site-navigation">
+				<div class="row">
+					<div class="col-6 col-lg-3">
+						<a href="/" class="logo m-0 float-start">BTONE_noticeboard</a>
+					</div>
+					<div class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
+						<ul class="js-clone-nav  text-center site-menu p-0 m-0">
+							<li><a href="/login">LOGIN</a></li>
+							<li><a href="/join">JOIN</a></li>
+							<li class="has-children">
+								<a href="#">Topic</a>
+								<ul class="dropdown">
+									<li><a href="#">Menu One</a></li>
+									<!-- 이중 드랍다운 필요시 사용 -->
+									<!-- <li class="has-children">
+										<a href="#">Menu Two</a>
+										<ul class="dropdown">
+											<li><a href="#">Sub Menu One</a></li>
+											<li><a href="#">Sub Menu Two</a></li>
+											<li><a href="#">Sub Menu Three</a></li>
+										</ul>
+									</li> -->
+									<li><a href="#">Menu Three</a></li>
+								</ul>
+							</li>
+							<li><a href="/services">Services</a></li>							
+
+						</ul>
+					</div>					
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+</div>
+</html>

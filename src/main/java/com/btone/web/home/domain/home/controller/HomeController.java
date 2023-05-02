@@ -47,7 +47,7 @@ public class HomeController {
 	
 	@GetMapping("/write")
 	public String ShowServices(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		logger.debug("------------------- homecotroller 진입");		
+		logger.debug("------------------- write page 진입");		
 						
 		return "writeContents";
 	}

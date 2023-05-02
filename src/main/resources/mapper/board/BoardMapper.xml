@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.btone.web.home.domain.board.mapper.BoardMapper">
+
+	<insert id="addContent" parameterType ="com.btone.web.home.domain.board.vo.Board">
+		insert into board (
+		 c_no,user_no, board_title,board_content, create_date, update_date, board_hits
+		) values(
+		#{categoryNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
+		)
+    </insert>
+  
+  
+</mapper>

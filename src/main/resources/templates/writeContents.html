@@ -8,7 +8,27 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
-	
+	function fn_addContent() {
+		var vo = {
+			categoryNo : $("#category option:selected").val(),
+			boardTitle : $("#title").val(),
+			boardContent : $("#content").val()
+			/*userNo: session에 있는 userNo 정보 넣기*/
+		};
+
+		console.log("data :", JSON.stringify(vo));
+
+		$.ajax({
+			url : "/board/addContent.do",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(vo),
+			success : function(data) {
+				console.log("글 등록 성공");
+				alert(data);
+			}
+		});
+	}
 </script>
 </head>
 
@@ -36,27 +56,38 @@
 				</div>
 			</div>
 			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-				<form action="#">
+				<form>
 					<div class="row">
 
 						<div class="col-12 mb-3">
 							<select id="category" name="category" class="form-control">
-								<option>-- 분류 --</option>
-								<option value="one">One</option>
-								<option value="two">Two</option>
-								<option value="three">Three</option>
+								<option value="0">-- 분류 --</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
 							</select>
 						</div>
 						<div class="col-12 mb-3">
-							<input type="text" class="form-control" placeholder="제목" name="title">
+							<input type="text" class="form-control" placeholder="제목"
+								name="title" id="title">
 						</div>
 						<div class="col-12 mb-3">
-							<textarea name="content" id="content" cols="30" rows="7" class="form-control"
-								placeholder="내용을 작성해주세요."></textarea>
+							<textarea name="content" id="content" cols="30" rows="7"
+								class="form-control" placeholder="내용을 작성해주세요."></textarea>
 						</div>
+						<div class="col-12 mb-3">
+									<form id="fileUploadForm" method="post" enctype="multipart/form-data"> 
+									<label for="formFile" class="form-label">첨부파일</label> 
+										
+										<input  class="form-control"type="file" id="uploadFiles" name="uploadFiles" multiple="multiple">
+										<br><button class="btn btn-primary" onclick="fn_fileUploaded();">업로드</button><br/>
+									</form>
+									<div id="fileView"></div>
+								</div>
 
 						<div class="col-12">
-							<input type="submit" value="Send Message" class="btn btn-primary">
+							<button type="button" onclick="fn_addContent();" class="btn btn-primary">등록</button>
+							<button type="button" class="btn btn-primary" onclick="location.href='contents.html'">취소</button>
 						</div>
 					</div>
 				</form>
@@ -66,5 +97,5 @@
 </div>
 <!-- /.untree_co-section -->
 
-</div>
+
 </html>

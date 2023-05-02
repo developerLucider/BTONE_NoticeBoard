@@ -1,8 +1,5 @@
 package com.btone.web.home.domain.board.vo;
 
-
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,15 +11,9 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Board {
-	
-	
+public class Category {
+
 	private int categoryNo;
-	private int userNo;
-	private String boardTitle;
-	private String boardContent;
-	private LocalDate createDate;
-	private LocalDate updateDate;
-	private int boardHits;
+	private String categoryName;
 	
 }

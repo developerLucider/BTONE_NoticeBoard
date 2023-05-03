@@ -13,4 +13,6 @@ public interface BoardMapper {
 	List<BoardVO> selectBoard();
 	
 	int addContent(Board board);
+
+	Board getBoardInfo(int bno);
 }

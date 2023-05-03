@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardVO {
+
 	private int board_No;
 	private int c_No;
 	private int user_No;
@@ -20,4 +21,5 @@ public class BoardVO {
 	private String create_Date;
 	private String update_Date;
 	
+
 }

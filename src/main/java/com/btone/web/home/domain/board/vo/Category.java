@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class Category {
 
-	private int categoryNo;
+	private int cNo;
 	private String categoryName;
 	
 }

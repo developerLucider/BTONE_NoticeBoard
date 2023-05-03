@@ -41,4 +41,11 @@ public class BoardService {
 		
 		return selectBoard;
 	}
+
+	//	글 상세보기
+	public Board getBoardInfo(int bno) {
+		Board info = boardMapper.getBoardInfo(bno);
+		
+		return info;
+	}
 }

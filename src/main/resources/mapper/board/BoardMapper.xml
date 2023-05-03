@@ -10,6 +10,9 @@
 		#{categoryNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
 		)
     </insert>
-  
+  	
+  	<select id="getBoardInfo" resultType ="com.btone.web.home.domain.board.vo.Board">
+  		SELECT * FROM BOARD WHERE BOARD_NO = 10
+  	</select>
   
 </mapper>

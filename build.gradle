@@ -44,9 +44,16 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
     implementation 'org.apache.commons:commons-lang3:3.6'
-    implementation 'org.apache.commons:commons-collections4:4.4'
-    implementation 'commons-io:commons-io:2.6'    
+    implementation 'org.apache.commons:commons-collections4:4.4'    
     implementation 'com.google.code.gson:gson:2.9.0'
+    
+    
+    implementation 'commons-fileupload:commons-fileupload:1.4'    
+    implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+    implementation 'org.apache.commons:commons-lang3:3.6'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'commons-io:commons-io:2.6'
+    
 }
 
 tasks.named('test') {

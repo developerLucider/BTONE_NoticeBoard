@@ -8,26 +8,84 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
+$(() => {
+
+    
+});
+	/*<![CDATA[*/
 	function fn_addContent() {
+		var session = /*[[${session}]]*/"${session}";
+		const userNo = session.loginUser.userNo; //login정보에서 userNo추출
+
+		console.log("session: ", JSON.stringify(session));
+		console.log("userNo : ", userNo);
+
 		var vo = {
 			categoryNo : $("#category option:selected").val(),
 			boardTitle : $("#title").val(),
 			boardContent : $("#content").val()
-			/*userNo: session에 있는 userNo 정보 넣기*/
+		/*userNo: session에 있는 userNo 정보 넣기*/
 		};
 
 		console.log("data :", JSON.stringify(vo));
+		if (!userNo) {
+			alert("글쓰기 권한이 없습니다.");
+		} else {
+			$.ajax({
+				url : "/board/addContent.do",
+				type : "post",
+				contentType : "application/json",
+				data : JSON.stringify(vo),
+				success : function(data) {
+					console.log("글 등록 성공");
+					alert(data);
+				}
+			});
 
-		$.ajax({
-			url : "/board/addContent.do",
-			type : "post",
-			contentType : "application/json",
-			data : JSON.stringify(vo),
-			success : function(data) {
-				console.log("글 등록 성공");
-				alert(data);
-			}
-		});
+		}
+	}
+	/*]]>*/
+
+	//파일전송 후 실행할 콜백 함수
+	function ImguploadCallback(data, state) {
+
+		if (state == "error") {
+			alert("이미지 전송중 예외가 발생하였습니다.\n관리자에게 문의해주세요.");
+			return false;
+		}
+
+		var list = data.list;
+		//var list = data;
+		var htmlBody = "";
+		htmlBody += " 	<h3>파일 다운로드</h3>";
+		htmlBody += " 	  <div id='filesDowload'>";
+		for (i = 0; i < list.length; i++) {
+
+			var item = list[i];
+			htmlBody += " 		<p>";
+			htmlBody += " 		<a href=/board/upload/fileDownload.do?filePath="
+					+ item["serverfileName"] + "&fileName="
+					+ item["originalFileName"] + ">" + item["originalFileName"]
+					+ " 파일다운로드" + (i + 1) + "</a>";
+			htmlBody += "        </p>";
+		}
+		htmlBody += " 	  </div>";
+
+		$("#fileView").append(htmlBody);
+
+	}
+
+	// 파일업로드 이벤트
+	function fn_fileUploaded() {
+
+		//폼전송
+		var frm;
+		frm = $('#fileUploadForm');
+		console.log("file", JSON.stringify(frm));
+		frm.attr("method", "post");
+		frm.attr("action", "/board/upload/fileUpload.do");
+		frm.ajaxForm(ImguploadCallback); //파일전송 후 실행할 콜백함수 지정	
+
 	}
 </script>
 </head>
@@ -56,15 +114,14 @@
 				</div>
 			</div>
 			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-				<form>
 					<div class="row">
 
 						<div class="col-12 mb-3">
 							<select id="category" name="category" class="form-control">
 								<option value="0">-- 분류 --</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
+								<option value="1">유머</option>
+								<option value="2">이직고민</option>
+								<option value="3">취미생활</option>
 							</select>
 						</div>
 						<div class="col-12 mb-3">
@@ -75,26 +132,30 @@
 							<textarea name="content" id="content" cols="30" rows="7"
 								class="form-control" placeholder="내용을 작성해주세요."></textarea>
 						</div>
-						<div class="col-12 mb-3">
-									<form id="fileUploadForm" method="post" enctype="multipart/form-data"> 
-									<label for="formFile" class="form-label">첨부파일</label> 
-										
-										<input  class="form-control"type="file" id="uploadFiles" name="uploadFiles" multiple="multiple">
-										<br><button class="btn btn-primary" onclick="fn_fileUploaded();">업로드</button><br/>
-									</form>
-									<div id="fileView"></div>
-								</div>
-
-						<div class="col-12">
-							<button type="button" onclick="fn_addContent();" class="btn btn-primary">등록</button>
-							<button type="button" class="btn btn-primary" onclick="location.href='contents.html'">취소</button>
-						</div>
 					</div>
-				</form>
+				<div class="col-12 mb-3">
+					<form id="fileUpload" method="post" enctype="multipart/form-data">
+						<label for="formFile" class="form-label">첨부파일</label> <input
+							class="form-control" type="file" id="uploadFiles"
+							name="uploadFiles" multiple="multiple"> <br>
+						<button class="btn btn-primary" onclick="fn_fileUploaded();">업로드</button>
+						<br />
+					</form>
+					<div id="fileView"></div>
+				</div>
+
+				<div class="col-12">
+					<button type="button" onclick="fn_addContent();"
+						class="btn btn-primary">등록</button>
+					<button type="button" class="btn btn-primary"
+						onclick="location.href='contents.html'">취소</button>
+				</div>
 			</div>
+
 		</div>
 	</div>
 </div>
+
 <!-- /.untree_co-section -->
 
 

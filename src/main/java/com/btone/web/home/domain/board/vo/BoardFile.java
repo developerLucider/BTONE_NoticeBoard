@@ -11,10 +11,10 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Category {
+public class BoardFile {
 
-	private int cNo;
-
-	private String cName;
-	
+	private int boardNo;
+	private String fileType;
+	private String fileOriginName;
+	private String fileName;
 }

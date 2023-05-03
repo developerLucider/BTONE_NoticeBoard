@@ -8,7 +8,95 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
+//아이디 중복체크
+function idcheck(res){
+	var res = false;
+	var id = $("#id").val();
 	
+	if(id.length == 0) {
+		alert('아이디를 입력해 주세요!');
+	}
+	   
+	else {
+		$.ajax({
+			url : "regist/idChk.do",
+			dataType : "json",
+			type :   "post",
+			async : false,
+			data :{
+			   "userId" : $("#id").val(),
+			},
+			success : function(result) {
+				res = result;
+			},
+			error : function(result) {
+				console.log("중복체크 통신 오류");
+			}
+		});
+	}
+
+	return res;
+};
+
+function alertIdChk() {
+	var res = idcheck(res);
+	
+	if(!res) {
+		alert("중복 된 ID입니다.");
+	} else {
+		alert("사용 가능한 ID입니다.");
+	}	
+}
+
+//회원가입
+function join(){
+   	var id = $("#id").val();
+   	var idChk = idcheck(id);
+   	var idReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])[a-z0-9$@!%*#^?&]*$/;
+      
+   	var pw = $("#password").val();
+   	var pwReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])[a-z0-9$@!%*#^?&]*$/;
+   
+   	var frmData = {
+		"userId" : $("#id").val(),
+   		"userPassword" : $("#password").val(),
+		"userName" : $("#name").val(),
+ 	   	"userEmail" : $("#mail").val()
+	}
+   	
+   	
+  	if(!idChk) {	// 아이디가 중복인 경우
+  		alert("중복된 ID으로는 계정 생성이 불가합니다.");
+  	} else {
+  		if(!pwReg.test(pw)) {		// 비밀번호의 형식이 맞지않는다면 (정규식이 해당하지않는다면)
+  	      alert('비밀번호는 영소문자, 숫자, 특수문자를 1자 이상 반드시 포함해야합니다.');
+  	   	} else {
+  		   if(pw.length < 8) {		// 자릿수가 맞지않는다면
+  			   alert("비밀번호는 8자리 이상이여야합니다.")
+  		   } else {
+  		   		$.ajax({
+  					url : "regist/join.do",
+  					dataType : "json",
+  					type : "post",
+  					contentType : "application/json",
+  		            data : JSON.stringify(frmData),
+  					success : function(data) {
+  						if(data < 0){
+  				       		alert('가입실패!');
+  				    	}
+  				    	else {
+  				        	alert('가입성공!');
+  				        	location.href="/";
+  				    	}
+  					},
+  					error : function(xhr, status, error) {
+  						 alert('가입 통신 오류');
+  					}
+  				});
+  	   	  }
+  	   }
+  	}  	  
+}
 </script>
 </head>
 
@@ -37,26 +125,46 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-					<form action="#">
+					<form method="post" onSubmit="return false;">
 						<div class="row">
+							<label for="id">ID
+							
+							</label>
+							<div class="col-4">
+								<input type="text" id="id" name="id">
+								<br>
+							</div>
+							<div class= "col">
+								<input type="button" value="ID 중복체크" class="btn-secondary" onclick="alertIdChk();"/>
+							</div>							
+						</div>
+						
+						<div class="row">
+							<label for="password">PW</label>
+							<div class="col-4">
+								<input type="password" id="password" name="password">
+								<br>
+							</div>
+						</div>
+						
+						<div class="row">						
 							<label for="name">Name</label>
-							<input type="text" id="name" name="name">
-							<br>
-							
-							<label for="id">ID</label>
-							<input type="text" id="id" name="id">
-							<br>
-							
-							<label for="password">password</label>
-							<input type="password" id="password" name="password">
-							<br>
-							
+							<div class="col-4">
+								<input type="text" id="name" name="name">
+								<br>
+							</div>
+						</div>
+						
+						<div class="row">						
 							<label for="mail">E-mail</label>
-							<input type="text" id="mail" name="mail">
-							<br>
+							<div class="col-4">
+								<input type="text" id="mail" name="mail">
+								<br>
+							</div>
 						</div>
 						<div class="col-12">
-							<input type="submit" value="회원가입" class="btn btn-primary">
+							<br>
+							<input type="button" value="회원가입" class="btn btn-primary" onclick="join();"/>
 						</div>
 					</form>
 				</div>

@@ -1,5 +1,7 @@
 package com.btone.web.home.domain.board.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.btone.web.home.domain.board.mapper.BoardMapper;
 import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.BoardVO;
 
 @Service
 public class BoardService {
 	@Autowired
 	private BoardMapper boardMapper;
-	@Autowired
+	
 	private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
 
 	public String addContent(Board board) {
@@ -28,5 +31,14 @@ public class BoardService {
 		}
 	
 		return result;
+	}
+	public List<BoardVO> selectBoard(){
+		logger.debug("--------------셀렉트 보드 서비스 진입");
+		
+		List<BoardVO> selectBoard = boardMapper.selectBoard();
+		
+		logger.debug("셀렉트 보드 서비스 결과 : {}", selectBoard);
+		
+		return selectBoard;
 	}
 }

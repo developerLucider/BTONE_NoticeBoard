@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>BTONE_NOTICEBOARD</title>
+
+
+    <link rel="stylesheet" href="css/tiny-slider.css">
+	<link rel="stylesheet" href="css/aos.css">
+	<link rel="stylesheet" href="css/flatpickr.min.css">
+	<link rel="stylesheet" href="css/glightbox.min.css">
+	<link rel="stylesheet" href="css/style.css">
+
+
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+
+
+	<script src="/js/jquery-1.12.4.min.js"></script>
+	<script src="/js/jquery.form.js"></script>
+	<script src="/js/jquery-ui.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script>
+	
+</script>
+</head>
+<body>
+	<div>
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+
+	<nav class="site-nav mt-3">
+		<div class="container">
+
+			<div class="site-navigation">
+				<div class="row">
+					<div class="col-6 col-lg-3">
+						<a href="/" class="logo m-0 float-start">BTONE_noticeboard</a>
+					</div>
+					<div class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
+						<ul class="js-clone-nav  text-center site-menu p-0 m-0">
+							<li><a href="/login">로그인</a></li>
+							<li><a href="/join">가입</a></li>
+							<li class="has-children">
+								<a href="/contents">Topic</a>
+								<ul class="dropdown">
+									<li><a href="/boardOne">Menu One</a></li>     <!--  클릭하면 카테고리별 리스트로 넘어가도록 -->
+									<li><a id="cNo" href="@{boardOne(c_No=2)}">Menu Two</a></li>								
+									<li><a href="#">Menu Three</a></li>
+								</ul>
+							</li>						
+						</ul>
+					</div>
+					<div class="col-6 col-lg-3 text-lg-end">
+						<ul class="js-clone-nav d-none d-lg-inline-block text-end site-menu ">
+							<li class="cta-button"><a href="/write">글쓰기</a></li>
+						</ul>
+
+						<a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
+							<span></span>
+						</a>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+</div>
+	<div>
+	
+	<div class="hero overlay">
+		<div class="img-bg rellax">
+			<img src="images/hero_2.jpg" alt="Image" class="img-fluid">
+		</div>
+		<div class="container">
+			<div class="row align-items-center justify-content-start">
+				<div class="col-lg-5">
+					<h1 class="heading" data-aos="fade-up">여기에 카테고리 번호와 이름 model로 따와서 each문으로 넣는다.</h1>
+					<p class="mb-5" data-aos="fade-up">컨텐츠 자유 입력(게시글 조회, 검색등)</p>
+				</div>
+			</div>
+		</div>		
+	</div>
+<!-- th:each="selectBoard : ${list}" -->
+	<div class="section service-section-1">
+		<div class="container">
+			<div class="row" th:each="list : ${list}" >
+				<div class="col-lg-3 mb-4 mb-lg-0">
+					<div class="heading-content" data-aos="fade-up">
+						<h2 th:text="${list.board_Title}"></h2>
+						<p>글 작성일</p>
+						<p th:text="${list.create_Date}"></p>
+						<p>글 수정일</p>
+						<p th:text="${list.update_Date}"></p>
+						<!-- <p class="my-4" data-aos="fade-up" data-aos-delay="300"><a href="#" class="btn btn-primary">View All</a></p> -->
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-6 col-md-6 col-lg-3 mb-4 mb-lg-0" data-aos="fade-up"  data-aos-delay="100">
+							<div class="service-1">
+								
+								<!-- 미방 아이콘 파트 -->
+								<!-- <span class="icon">
+									<img src="images/svg/01.svg" alt="Image" class="img-fluid">
+								</span> -->
+								<div>
+									<h3 th:text="${list.board_Title}"></h3>
+									<p th:text="${list.board_Content}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+	<!-- 이곳 부분은 나중에 쓸 일이 생기면 쓰는 것으로 합시다. -->
+
+	<!-- <div class="section">
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-lg-6 mx-auto text-center">
+					<div class="heading-content" data-aos="fade-up">
+						<h2>Featured Servicwes</h2>
+						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+						<p class="my-4" data-aos="fade-up" data-aos-delay="300"><a href="#" class="btn btn-primary">View All</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="service-2 left-0 mb-5">
+						<img src="images/gal_5.jpg" alt="Image" class="img-fluid mb-4 rounded">
+						<div>
+							<h3>Airport Lounge Access</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<p><a href="#" class="more">Learn More</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="service-2 left-0 mb-5">
+						<img src="images/gal_6.jpg" alt="Image" class="img-fluid mb-4 rounded">
+						<div>
+							<h3>Airport Lounge Access</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<p><a href="#" class="more">Learn More</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="service-2 left-0 mb-5">
+						<img src="images/gal_3.jpg" alt="Image" class="img-fluid mb-4 rounded">
+						<div>
+							<h3>Airport Lounge Access</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<p><a href="#" class="more">Learn More</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="service-2 left-0 mb-5">
+						<img src="images/gal_4.jpg" alt="Image" class="img-fluid mb-4 rounded">
+						<div>
+							<h3>Airport Lounge Access</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+							<p><a href="#" class="more">Learn More</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+</div>
+	<div>
+	<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="widget">
+						<h3>About BTONE<span class="text-primary">.</span> </h3>
+						<p>비티원은 다년간의 ITO 사업을 통한 기술축적과 know-How와 다양한 프로젝트 수행 경험을 바탕으로 빠르게 변하는 IT와 개발환경에 최적화된 기술을 제공하고 이를 기반으로 한 SI 컨설팅,솔루션 개발 및 서비스를 제공하고 있습니다.</p>
+					</div> <!-- /.widget -->
+					<div class="widget">
+						<h3>Connect</h3>
+						<ul class="list-unstyled social">
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-instagram"></span></a></li>
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-twitter"></span></a></li>
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-facebook"></span></a></li>
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-linkedin"></span></a></li>
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-pinterest"></span></a></li>
+							<li><a href="http://www.bow-tech.co.kr/"><span class="icon-dribbble"></span></a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+	
+				<div class="col-lg-3">
+					<div class="widget">
+						<h3>Contact</h3>
+						<address>서울시 성동구 연무장5가길 7, E동1207호 (성수동2가, 현대테라스타워)</address>
+						<ul class="list-unstyled links mb-4">
+							<li><a href="tel://11234567890">02)2223-2030</a></li>
+							<li><a href="mailto:info@mydomain.com">jjang@bitione.com</a></li>
+						</ul>
+					</div> <!-- /.widget -->
+				</div> <!-- /.col-lg-3 -->
+
+			</div> <!-- /.row -->
+
+			<div class="row mt-5">
+				<div class="col-12 text-center">
+					<p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. <!-- License information: https://untree.co/license/ -->
+					</p>
+				</div>
+			</div> <!-- /.container -->
+		</div> <!-- /.site-footer -->
+
+		<!-- Preloader -->
+		<div id="overlayer"></div>
+		<div class="loader">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/tiny-slider.js"></script>
+		<script src="js/aos.js"></script>
+		<script src="js/navbar.js"></script>
+		<script src="js/counter.js"></script>
+		<script src="js/rellax.js"></script>
+		<script src="js/flatpickr.js"></script>
+		<script src="js/glightbox.min.js"></script>
+		<script src="js/custom.js"></script>
+	</div>
+</div>
+</body>
+</html>

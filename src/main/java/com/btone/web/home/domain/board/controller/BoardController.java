@@ -47,8 +47,6 @@ public class BoardController {
 		
 	}
 
-
-
 //	글상세보기
 	@GetMapping("info/{bno}")
 	public String Showinfo(@PathVariable int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {

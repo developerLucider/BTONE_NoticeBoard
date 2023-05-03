@@ -10,12 +10,11 @@
 		#{categoryNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
 		)
     </insert>
-<<<<<<< Updated upstream
-  	
+    
+    
   	<select id="getBoardInfo" resultType ="com.btone.web.home.domain.board.vo.Board">
   		SELECT * FROM BOARD WHERE BOARD_NO = 10
   	</select>
-=======
     
     <select id="selectBoard" resultType="com.btone.web.home.domain.board.vo.BoardVO">
 	SELECT 
@@ -30,6 +29,5 @@
 		from board
 	</select>
   
->>>>>>> Stashed changes
   
 </mapper>

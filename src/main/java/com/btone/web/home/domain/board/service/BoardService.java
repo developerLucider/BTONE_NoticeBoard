@@ -1,5 +1,7 @@
 package com.btone.web.home.domain.board.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,12 @@ public class BoardService {
 		}
 	
 		return result;
+	}
+
+//	글 상세보기
+	public Board getBoardInfo(int bno) {
+		Board info = boardMapper.getBoardInfo(bno);
+		
+		return info;
 	}
 }

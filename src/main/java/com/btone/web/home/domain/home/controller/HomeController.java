@@ -1,8 +1,12 @@
 package com.btone.web.home.domain.home.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.BoardVO;
 import com.btone.web.home.domain.home.service.HomeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +25,13 @@ public class HomeController {
 	private HomeService homeService;
 	
 	@GetMapping("/")
-	public String ShowFirst(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	public String ShowFirst(HttpServletRequest request, HttpServletResponse response, ModelMap model)throws Exception {
 		logger.debug("------------------- homecotroller 진입");		
 		
-		String res = homeService.getTestString();
-				
-		logger.debug("컨트롤러 테스트 결과 : {}", res);
+		List<Board> list = homeService.getList();
+		model.addAttribute("list", list);
+		
+		logger.debug("list: {}", list);
 				
 		return "home";
 	}
@@ -59,5 +64,6 @@ public class HomeController {
 		return "contents";
 	}
 	
+
 	
 }

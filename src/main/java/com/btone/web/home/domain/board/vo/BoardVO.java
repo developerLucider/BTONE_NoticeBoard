@@ -11,9 +11,14 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Category {
-
-	private int cNo;
-	private String categoryName;
+public class BoardVO {
 	
+   private int board_No;
+   private int c_No;
+   private int user_No;
+   private String board_Title;
+   private String board_Content;
+   private String create_Date;
+   private String update_Date;
+   
 }

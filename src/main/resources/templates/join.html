@@ -13,11 +13,10 @@ function idcheck(res){
 	var res = false;
 	var id = $("#id").val();
 	
+	
 	if(id.length == 0) {
 		alert('아이디를 입력해 주세요!');
-	}
-	   
-	else {
+	} else {
 		$.ajax({
 			url : "regist/idChk.do",
 			dataType : "json",
@@ -38,13 +37,21 @@ function idcheck(res){
 	return res;
 };
 
-function alertIdChk() {
+function alertIdChk() {	// 중복, 길이 예외처리 alert
 	var res = idcheck(res);
+	
+	var id = $("#id").val();
+	var idReg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
 	
 	if(!res) {
 		alert("중복 된 ID입니다.");
 	} else {
-		alert("사용 가능한 ID입니다.");
+		if(!idReg.test(id)) {
+			alert('아이디는 영문자 + 숫자로 이루어진 8~16자리입니다.' + '다시 입력해주세요.');
+		} else {
+			alert("사용 가능한 ID입니다.");	
+		}
+		
 	}	
 }
 
@@ -52,51 +59,67 @@ function alertIdChk() {
 function join(){
    	var id = $("#id").val();
    	var idChk = idcheck(id);
-   	var idReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])[a-z0-9$@!%*#^?&]*$/;
+   	var idReg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
       
    	var pw = $("#password").val();
    	var pwReg = /^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*])[a-z0-9$@!%*#^?&]*$/;
    
+   	var name = $("#name").val();
+   	
+   	var email = $("#mail").val();
+   	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+   	
    	var frmData = {
-		"userId" : $("#id").val(),
-   		"userPassword" : $("#password").val(),
-		"userName" : $("#name").val(),
- 	   	"userEmail" : $("#mail").val()
+		"userId" : id,
+   		"userPassword" : pw,
+		"userName" : name,
+ 	   	"userEmail" : email
 	}
    	
+   	console.log(name.length);
    	
-  	if(!idChk) {	// 아이디가 중복인 경우
-  		alert("중복된 ID으로는 계정 생성이 불가합니다.");
-  	} else {
-  		if(!pwReg.test(pw)) {		// 비밀번호의 형식이 맞지않는다면 (정규식이 해당하지않는다면)
-  	      alert('비밀번호는 영소문자, 숫자, 특수문자를 1자 이상 반드시 포함해야합니다.');
-  	   	} else {
-  		   if(pw.length < 8) {		// 자릿수가 맞지않는다면
-  			   alert("비밀번호는 8자리 이상이여야합니다.")
-  		   } else {
-  		   		$.ajax({
-  					url : "regist/join.do",
-  					dataType : "json",
-  					type : "post",
-  					contentType : "application/json",
-  		            data : JSON.stringify(frmData),
-  					success : function(data) {
-  						if(data < 0){
-  				       		alert('가입실패!');
-  				    	}
-  				    	else {
-  				        	alert('가입성공!');
-  				        	location.href="/";
-  				    	}
-  					},
-  					error : function(xhr, status, error) {
-  						 alert('가입 통신 오류');
-  					}
-  				});
-  	   	  }
-  	   }
-  	}  	  
-}
+   	if(!idChk) {	// 아이디가 중복인 경우
+  	  		alert("중복된 ID으로는 계정 생성이 불가합니다.");
+  		} else {
+  			if(!pwReg.test(pw)) {		// 비밀번호의 형식이 맞지않는다면 (정규식이 해당하지않는다면)
+  	  	      alert('비밀번호는 영소문자, 숫자, 특수문자를 1자 이상 반드시 포함해야합니다.');
+  	  	   	} else {
+  	  		   if(pw.length < 8) {		// 비밀번호 자릿수가 맞지않는다면
+  	  			   alert("비밀번호는 8자리 이상이여야합니다.");
+  	  		   } else {
+  	  			   if(name.length <= 0) {	// 이름이 없는경우
+  	  				   alert('이름을 입력해주세요.');
+  	  			   } else {
+  	  				if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
+   	  				   alert("이메일 형식이 유효하지 않습니다.\n" + 
+   	  						 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
+   	  						 "ex)btone@btone.com");
+   	  			   } else {
+	   	  				 $.ajax({
+	   	   					url : "regist/join.do",
+	   	   					dataType : "json",
+	   	   					type : "post",
+	   	   					contentType : "application/json",
+	   	   		            data : JSON.stringify(frmData),
+	   	   					success : function(data) {
+	   	   						if(data < 0){
+	   	   				       		alert('가입실패!');
+	   	   				    	}
+	   	   				    	else {
+	   	   				        	alert('가입성공!');
+	   	   				        	location.href="/";
+	   	   				    	}
+	   	   					},
+	   	   					error : function(xhr, status, error) {
+	   	   						 alert('가입 통신 오류');
+	   	   					}
+	   	   				});
+   	  			   }
+  	  			   }  	  			   
+  	  	   	  }
+  	  	   }
+  		}  		
+  	}
 </script>
 </head>
 

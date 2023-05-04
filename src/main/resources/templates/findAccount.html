@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BTONE_NOTICEBOARD</title>
+
+<script th:inline="javascript">
+
+//ID찾기
+function findId() {
+   	var name = $("#name").val();
+   	
+   	var email = $("#mail").val();
+   	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+   	
+   	var frmData = {
+		"userName" : name,
+ 	   	"userEmail" : email
+	}   	
+   	  			
+	if(name.length <= 0) {	// 이름이 없는경우
+		alert('이름을 입력해주세요.');
+  	} else {
+		if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
+		   alert("이메일 형식이 유효하지 않습니다.\n" + 
+				 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
+				 "ex)btone@btone.com");
+	   } else {
+		 	$.ajax({
+				url : "/login/find/findId.do",
+				dataType : "json",
+				type : "post",
+				contentType : "application/json",
+		        data : JSON.stringify(frmData),
+				success : function(data) {
+					if(data.userId) {
+						alert("찾으시는 계정 ID : " + data.userId);
+					} else if(data.userId == ""){
+						alert("찾으시는 계정은 존재하지 않습니다.")
+					}		    	
+				},
+				error : function(xhr, status, error) {
+					 alert('아이디 찾기 통신 오류');
+				}
+			});
+   	  }	
+  	}
+}
+
+//비밀번호 찾기
+function findPw() {
+	var id = $("#id").val();
+   	var idReg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
+	
+   	var name = $("#name").val();
+   	
+   	var email = $("#mail").val();
+   	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+   	
+   	var frmData = {
+   		"userId" : id,
+		"userName" : name,
+ 	   	"userEmail" : email
+	}   	
+   	
+   	console.log(frmData);
+   	
+   	if(!idReg.test(id)) {
+		alert('아이디는 영문자 + 숫자로 이루어진 8~16자리입니다.' + '다시 입력해주세요.');
+	} else {
+		if(name.length <= 0) {	// 이름이 없는경우
+			alert('이름을 입력해주세요.');
+	  	} else {
+			if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
+			   alert("이메일 형식이 유효하지 않습니다.\n" + 
+					 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
+					 "ex)btone@btone.com");
+		   } else {
+			 	$.ajax({
+					url : "/login/find/findPw.do",
+					dataType : "json",
+					type : "post",
+					contentType : "application/json",
+			        data : JSON.stringify(frmData),
+					success : function(data) {
+						if(data.userId) {
+							alert("찾으시는 계정의 비밀번호 : " + data.userPassword);
+						} else if(data.userId == ""){
+							alert("찾으시는 계정은 존재하지 않습니다.")
+						}		    	
+					},
+					error : function(xhr, status, error) {
+						 alert('비밀번호 찾기 통신 오류');
+					}
+				});
+	   	  }	
+	  	}
+	}
+	
+}
+</script>
+</head>
+
+<div layout:fragment="content">
+	<div class="hero overlay">
+		<div class="img-bg rellax">
+			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
+		</div>
+		<div class="container">
+			<div class="row align-items-center justify-content-start">
+				<div class="col-lg-6 mx-auto text-center">
+					<h1 class="heading" data-aos="fade-up" th:if="${type == 'id'}">계정찾기</h1>
+					<h1 class="heading" data-aos="fade-up" th:if="${type == 'pw'}" >비밀번호찾기</h1> 
+					<p data-aos="fade-up" th:if="${type == 'id'}" >아이디 찾기</p>
+					<p data-aos="fade-up" th:if="${type == 'pw'}" >비밀번호 찾기</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-12"	data-aos="fade-up" data-aos-delay="0">
+					
+					<h2 class="heading mb-5" th:if="${type == 'id'}">Find ID</h2>
+					<h2 class="heading mb-5" th:if="${type == 'pw'}">Find Password</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+					<form method="post" onSubmit="return false;">
+						<div class="row" th:if="${type == 'pw'}">
+							<label for="id">ID</label>
+							<div class="col-4">
+								<input type="text" id="id" name="id">
+								<br>
+							</div>						
+						</div>
+												
+						<div class="row">						
+							<label for="name">Name</label>
+							<div class="col-4">
+								<input type="text" id="name" name="name">
+								<br>
+							</div>
+						</div>
+						
+						<div class="row">						
+							<label for="mail">E-mail</label>
+							<div class="col-4">
+								<input type="text" id="mail" name="mail">
+								<br>
+							</div>
+						</div>
+						<div class="col-12">
+							<br>
+							<input type="button" value="아이디찾기" class="btn btn-secondary"
+								 th:if="${type == 'id'}" onclick="findId();">
+							<input type="button" value="비밀번호찾기" class="btn btn-secondary"
+								 th:if="${type == 'pw'}" onclick="findPw();">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

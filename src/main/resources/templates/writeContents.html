@@ -32,7 +32,7 @@ $(() => {
 			alert("글쓰기 권한이 없습니다.");
 		} else {
 			$.ajax({
-				url : "/board/addContent.do",
+				url : "/addContent.do",
 				type : "post",
 				contentType : "application/json",
 				data : JSON.stringify(vo),
@@ -134,7 +134,7 @@ $(() => {
 						</div>
 					</div>
 				<div class="col-12 mb-3">
-					<form id="fileUpload" method="post" enctype="multipart/form-data">
+					<form id="fileUpload"  enctype="multipart/form-data">
 						<label for="formFile" class="form-label">첨부파일</label> <input
 							class="form-control" type="file" id="uploadFiles"
 							name="uploadFiles" multiple="multiple"> <br>

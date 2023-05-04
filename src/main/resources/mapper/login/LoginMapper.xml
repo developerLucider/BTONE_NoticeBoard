@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.btone.web.home.domain.login.mapper.LoginMapper">
+	
+	<resultMap type="com.btone.web.home.domain.login.vo.UserLoginVO" id="userLogin">
+		<result column="USER_NO" property="userNo" />
+		<result column="USER_EMAIL" property="userEmail" />
+		<result column="USER_NAME" property="userName" />
+		<result column="USER_ID" property="userId" />
+		<result column="USER_PASSWORD" property="userPassword" />		
+	</resultMap>
+	
+	<!-- 접속시도 로그인 계정 정보 확인 -->
+	<select id="loginUser" resultMap="userLogin">
+	 	SELECT USER_NO, USER_EMAIL, USER_NAME, USER_ID, USER_PASSWORD
+     	FROM USER     
+     	WHERE USER_ID = #{userId}
+	</select>  
+  	
+</mapper>

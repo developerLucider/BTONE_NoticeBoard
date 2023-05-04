@@ -26,20 +26,13 @@
 					<div
 						class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
 						<ul class="js-clone-nav  text-center site-menu p-0 m-0">
-							<li><a href="/login">LOGIN</a></li>
-							<li><a href="/join">JOIN</a></li>
+							<li><a th:if="${session.loginUser == null}" href="/login">로그인</a></li>
+							<li><a th:if="${session.loginUser != null}" href="/login/logout.do">로그아웃</a></li>
+							<li><a th:if="${session.loginUser == null}" href="/join">회원가입</a></li>
 							<li class="has-children"><a href="#">Topic</a>
 								<ul class="dropdown">
-									<li><a href="#">Menu One</a></li>
-									<!-- 이중 드랍다운 필요시 사용 -->
-									<!-- <li class="has-children">
-										<a href="#">Menu Two</a>
-										<ul class="dropdown">
-											<li><a href="#">Sub Menu One</a></li>
-											<li><a href="#">Sub Menu Two</a></li>
-											<li><a href="#">Sub Menu Three</a></li>
-										</ul>
-									</li> -->
+									<li><a href="/boardOne">Menu One</a></li>     <!--  클릭하면 카테고리별 리스트로 넘어가도록 -->
+									<li><a href="#">Menu Two</a></li>								
 									<li><a href="#">Menu Three</a></li>
 								</ul></li>
 

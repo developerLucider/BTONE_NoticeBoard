@@ -14,7 +14,34 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
+function login() {
+	var id = $("#id").val();
+	var pw = $("#password").val();
 	
+	var frmData = {
+		"userId" : id,
+		"userPassword" : pw
+	}
+		
+	$.ajax({
+		url : "login/login.do",
+		dataType : "json",
+		type : "post",
+		contentType : "application/json",
+        data : JSON.stringify(frmData),
+		success : function(data) {
+			if(data) {
+				alert("로그인 성공");
+				location.href = '/';
+			} else {
+				alert("로그인에 실패했습니다. ID와 비밀번호를 확인해주세요");
+			}
+		},
+		error : function(xhr, status, error) {
+			alert("로그인에 실패했습니다. ID와 비밀번호를 확인해주세요");
+		}
+	});
+}
 </script>
 </head>
 
@@ -44,18 +71,18 @@
 			</div>
 			<div class="row">				
 				<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-					<form action="#">
+					<form method="post" onSubmit="return false;">
 						<div class="row">
 							<div class="col-6 mb-3">
-								<input type="text" class="form-control" placeholder="ID">
-							</div>
-							<div class="col-6 mb-3">
-								<input type="password" class="form-control" placeholder="password">
+								<input type="text" class="form-control" placeholder="ID" id="id">
+								<br>
+								<input type="password" class="form-control" placeholder="password" id="password">
 							</div>
 							
-
-							<div class="col-12">
-								<input type="submit" value="LOGIN" class="btn btn-primary">
+							<div class="col-8">
+								<input type="button" value="LOGIN" onclick="login();" class="btn btn-primary">
+								<input type="button" value="아이디찾기" class="btn btn-secondary">
+								<input type="button" value="비밀번호찾기" class="btn btn-secondary">
 							</div>
 						</div>
 					</form>

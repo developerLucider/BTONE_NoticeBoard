@@ -48,18 +48,16 @@ public class BoardController {
 	}
 
 //	글상세보기
-	@GetMapping("info/{bno}")
+	@RequestMapping(value="/{bno}")	
 	public String Showinfo(@PathVariable int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- info 진입");		
 		Board info = boardService.getBoardInfo(bno);
 		model.addAttribute("info", info);
-		
+
 		logger.debug(" {} :", bno);
 		
 		return "info";
 	}
-	
-
 	
 	/**
 	 * @author sojin

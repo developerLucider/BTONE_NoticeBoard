@@ -6,9 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BTONE_NOTICEBOARD</title>
-<style type="text/css">
-	
-</style>
 
 <script th:inline="javascript">
 
@@ -16,8 +13,6 @@
 </head>
 
 <div layout:fragment="content">
-	
-
 	<div class="hero overlay">
 		<div class="img-bg rellax">
 			<img src="images/hero_2.jpg" alt="Image" class="img-fluid">
@@ -40,11 +35,11 @@
 					<div class="media-entry">
 						<div class="bg-white m-body" >
 							<span class="date" th:text="${list.createDate}"></span>
-							<h3><a href="/" th:text="${listStat.count}" ></a>번째 최신글</h3>
-							<h3><a href="/" th:text="${list.boardNo}" ></a></h3>
-							<h3><a href="/" th:text="${list.boardTitle}" ></a></h3>
+							<h3 th:text="${listStat.count}" >번째 최신글</h3>
+							<h3 th:text="${list.boardNo}" ></h3>
+							<h3 th:text="${list.boardTitle}" ></h3>
 							<p th:text="${list.boardContent}"></p>
-							<a th:href="@{/info/{bno}(bno=${list.boardNo})}" class="more d-flex align-items-center float-start">
+							<a th:href="@{/{bno}(bno=${list.boardNo})}" class="more d-flex align-items-center float-start">
 								<span class="label">자세히 읽기</span>
 								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
 							</a>							

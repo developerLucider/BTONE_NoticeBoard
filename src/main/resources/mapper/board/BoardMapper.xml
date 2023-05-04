@@ -13,7 +13,7 @@
     
     
   	<select id="getBoardInfo" resultType ="com.btone.web.home.domain.board.vo.Board">
-  		SELECT * FROM BOARD WHERE BOARD_NO = 10
+  		SELECT * FROM BOARD WHERE BOARD_NO = #{bno}
   	</select>
     
     <select id="selectBoard" resultType="com.btone.web.home.domain.board.vo.BoardVO">

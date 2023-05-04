@@ -2,11 +2,12 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/write}">
+	layout:decorate="~{layout/default}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BTONE_NOTICEBOARD</title>
-
+<style>
+</style>
 <script th:inline="javascript">
 	
 </script>
@@ -19,9 +20,9 @@
 		</div>
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
-				<div class="col-lg-5">
-					<h1 class="heading" data-aos="fade-up">글 상세보기</h1>
-					<p class="mb-5" data-aos="fade-up">글 상세 페이지입니다.</p>
+				<div class="col-lg-6 mx-auto text-center">
+					<h1 class="heading" data-aos="fade-up">상세보기</h1>
+					<p class="mb-4" data-aos="fade-up">상세보기 페이지 입니다.</p>
 				</div>
 			</div>
 		</div>
@@ -29,53 +30,36 @@
 
 	<div class="section">
 		<div class="container">
-			<div class="row">
-				<div class="col-12" data-aos="fade-up" data-aos-delay="0">
-
-					<h2 class="heading mb-5">글 상세보기</h2>
-				</div>
-			</div>
-			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-				<form>
-					<div class="row">
-
-						<div class="col-12 mb-3">
-							<select id="category" name="category" class="form-control">
-								<option value="0">-- 분류 --</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-						</div>
-						<div class="col-12 mb-3">
-							<input type="text" class="form-control" th:value="${info.boardTitle }"
-								name="title" id="title">
-						</div>
-						<div class="col-12 mb-3">
-							<textarea name="content" id="content" cols="30" rows="7"
-								class="form-control" th:text="${info.boardContent }"></textarea>
-						</div>
-						<div class="col-12 mb-3">
-									<form id="fileUploadForm" method="post" enctype="multipart/form-data"> 
-									<label for="formFile" class="form-label">첨부파일</label> 
-										
-										<input  class="form-control"type="file" id="uploadFiles" name="uploadFiles" multiple="multiple">
-										<br><button class="btn btn-primary" onclick="fn_fileUploaded();">업로드</button><br/>
-									</form>
-									<div id="fileView"></div>
-								</div>
-
-						<div class="col-12">
-							<button type="button" onclick="fn_addContent();" class="btn btn-primary">등록</button>
-							<button type="button" class="btn btn-primary" onclick="location.href='contents.html'">취소</button>
-						</div>
+			<div class="row align-items-stretch">
+				<div class="col-12 mb-3">
+					<table>
+						<tr>
+							<th th:text="${info.boardTitle}"></th>
+						</tr>
+						<tr>
+							<td th:text="${info.boardContent}"></td>
+						</tr>
+					</table>
+					<!-- onclick으로 댓글 리스트 보이게 작성 -->
+					<button type="button" class="btn btn-primary" onclick="">댓글보기▼</button>
+					<div>
+						<!-- 댓글리스트 공간 -->
 					</div>
-				</form>
+					<br>
+					<div>
+						<span></span>
+						<!-- 로그인된 아이디 출력되게 -->
+						<textarea name="reply" id="reply" cols="30" rows="2"
+							class="form-control"></textarea>
+						<button type="button" onclick="">등록</button>
+					</div>
+				</div>
+
+
 			</div>
 		</div>
 	</div>
+
+
 </div>
-<!-- /.untree_co-section -->
-
-
 </html>

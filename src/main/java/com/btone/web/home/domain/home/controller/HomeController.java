@@ -1,8 +1,11 @@
 package com.btone.web.home.domain.home.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.home.service.HomeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +19,17 @@ public class HomeController {
 	
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+	@Autowired
+	private HomeService homeService;
 	
 	@GetMapping("/")
 	public String ShowFirst(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");		
-						
+		List<Board> list = homeService.getList();
+		logger.debug("list : {}", list);		
+		
+		model.addAttribute("list", list);
+		
 		return "home";
 	}
 	

@@ -6,6 +6,9 @@ import com.btone.web.home.domain.findAccount.vo.AccountVO;
 
 @Mapper
 public interface FindAccountMapper {
-	// 로그인
+	// 아이디 찾기
 	AccountVO findId(AccountVO accountVO);
+	
+	// 비밀번호 찾기
+	AccountVO findPw(AccountVO accountVO);
 }

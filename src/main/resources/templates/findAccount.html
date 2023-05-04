@@ -9,7 +9,6 @@
 
 <script th:inline="javascript">
 
-
 //ID찾기
 function findId() {
    	var name = $("#name").val();
@@ -40,7 +39,7 @@ function findId() {
 					if(data.userId) {
 						alert("찾으시는 계정 ID : " + data.userId);
 					} else if(data.userId == ""){
-						alert("해당 정보의 ID가 존재하지 않습니다.")
+						alert("찾으시는 계정은 존재하지 않습니다.")
 					}		    	
 				},
 				error : function(xhr, status, error) {
@@ -49,6 +48,58 @@ function findId() {
 			});
    	  }	
   	}
+}
+
+//비밀번호 찾기
+function findPw() {
+	var id = $("#id").val();
+   	var idReg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$/;
+	
+   	var name = $("#name").val();
+   	
+   	var email = $("#mail").val();
+   	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+   	
+   	var frmData = {
+   		"userId" : id,
+		"userName" : name,
+ 	   	"userEmail" : email
+	}   	
+   	
+   	console.log(frmData);
+   	
+   	if(!idReg.test(id)) {
+		alert('아이디는 영문자 + 숫자로 이루어진 8~16자리입니다.' + '다시 입력해주세요.');
+	} else {
+		if(name.length <= 0) {	// 이름이 없는경우
+			alert('이름을 입력해주세요.');
+	  	} else {
+			if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
+			   alert("이메일 형식이 유효하지 않습니다.\n" + 
+					 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
+					 "ex)btone@btone.com");
+		   } else {
+			 	$.ajax({
+					url : "/login/find/findPw.do",
+					dataType : "json",
+					type : "post",
+					contentType : "application/json",
+			        data : JSON.stringify(frmData),
+					success : function(data) {
+						if(data.userId) {
+							alert("찾으시는 계정의 비밀번호 : " + data.userPassword);
+						} else if(data.userId == ""){
+							alert("찾으시는 계정은 존재하지 않습니다.")
+						}		    	
+					},
+					error : function(xhr, status, error) {
+						 alert('비밀번호 찾기 통신 오류');
+					}
+				});
+	   	  }	
+	  	}
+	}
+	
 }
 </script>
 </head>

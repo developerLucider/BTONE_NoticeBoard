@@ -22,7 +22,7 @@ public class LoginController {
 	@GetMapping("/find/{type}")
 	public String ShowFirst(@PathVariable("type")String type, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");
-		logger.debug("type tostring = {}", type.toString());
+		logger.debug("type = {}", type);
 		
 		if(type.toString().equals("id")) {
 			model.addAttribute("type", "id");				

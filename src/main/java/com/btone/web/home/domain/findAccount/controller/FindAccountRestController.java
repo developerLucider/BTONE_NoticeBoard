@@ -23,18 +23,31 @@ public class FindAccountRestController {
 	
 	private final FindAccountService findAccountService;
 		
-	//로그인 (세션에 로그인 유저정보 담기)
+	//ID 찾기
 	@RequestMapping("/findId.do")
-	public AccountVO userLogin(@RequestBody AccountVO accountVo, HttpServletRequest request, Model model){
+	public AccountVO findId(@RequestBody AccountVO accountVo, HttpServletRequest request, Model model){
 		
 		logger.info("----- ID 찾기 컨트롤러 진입 -----");
 						
 		// 아이디 찾기
 		AccountVO findId = findAccountService.findId(accountVo);
 	     		 		    
- 		logger.debug("------ 찾아온 ID : {}", findId);	
+ 		logger.debug("------ 찾아온 계정 : {}", findId);	
  		
  		return findId;
+	}
+	
+	@RequestMapping("/findPw.do")
+	public AccountVO findPw(@RequestBody AccountVO accountVo, HttpServletRequest request, Model model){
+		
+		logger.info("----- ID 찾기 컨트롤러 진입 -----");
+		
+		// 아이디 찾기
+		AccountVO findPw = findAccountService.findPw(accountVo);
+		
+		logger.debug("------ 찾아온 계정 : {}", findPw);	
+		
+		return findPw;
 	}
 	
 	

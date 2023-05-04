@@ -17,6 +17,14 @@
      	FROM USER     
      	WHERE USER_NAME = #{userName}
      	AND USER_EMAIL = #{userEmail}
-	</select>  
+	</select>
+	
+	<select id="findPw" resultMap="findUser">
+	 	SELECT USER_ID, USER_PASSWORD
+     	FROM USER     
+     	WHERE USER_NAME = #{userName}
+     	AND USER_EMAIL = #{userEmail}
+     	AND USER_ID = #{userId}
+	</select>    
   	
 </mapper>

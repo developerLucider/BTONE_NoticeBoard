@@ -42,17 +42,38 @@ public class FindAccountService {
 
     	logger.debug("---- db에서 검색한 아이디 : {}", findId);
 
-    	return findUser;
-		/*
-		 * // common으로 만든 디코더를 이용해 복호화 String decodingPw =
-		 * Base64Utils.base64Decoder(dbPw);
-		 * 
-		 * logger.debug("디코딩된 비밀번호 : {}", decodingPw);
-		 * 
-		 * 
-		 * if(tryId.equals(dbId) && tryPw.equals(decodingPw)) { return loginUser; } else
-		 * { return null; }
-		 */  
+    	return findUser;		 
 	}
 	
+	public AccountVO findPw(AccountVO accountVo) {
+		
+		logger.debug("PW찾기 서비스 진입");
+		
+		logger.debug("----- 찾으려는 계정의 ID : {}", accountVo.getUserId());
+	    logger.debug("----- 찾으려는 계정의 이름 : {}", accountVo.getUserName());
+	    logger.debug("----- 찾으려는 계정의 이메일 : {}", accountVo.getUserEmail());
+	    
+	    // 로그인할 계정의 정보가 db에 있는지 확인
+	 	AccountVO findUser = findAccountMapper.findPw(accountVo);
+	 	
+	 	if(Objects.isNull(findUser)) {
+	 		// null exception 방지 빈 객체 생성 후 빈값 넣기
+	 		findUser = new AccountVO();
+	 		findUser.setUserId("");
+	 		findUser.setUserPassword("");
+	 		
+	 		return findUser;
+	 	} else {
+	 		// common으로 만든 디코더를 이용해 복호화
+	 		String decodingFindPw =	Base64Utils.base64Decoder(findUser.getUserPassword());
+			  
+			logger.debug("----- 디코딩된 찾을 계정의 비밀번호 : {}", decodingFindPw);
+			
+			// 복호화한 비밀번호를 객체에 담아 리턴
+			findUser.setUserPassword(decodingFindPw);
+			
+			return findUser; 
+	 	}	 			
+			   
+	}
 }

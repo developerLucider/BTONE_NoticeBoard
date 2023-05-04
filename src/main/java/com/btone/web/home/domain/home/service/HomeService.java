@@ -34,5 +34,15 @@ public class HomeService {
 		return list;
 	}
 
+	//검색
+	public List<Board> getSearch(String search, String type) {
+		logger.debug("-------------------homeService 진입");
+		List<Board> searchList = homeMapper.getSearch(search, type);
+		
+		return searchList;
+	}
+	
+	
+
 
 }

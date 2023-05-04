@@ -12,5 +12,9 @@
 		(select * from BOARD where C_NO = 3 ORDER by CREATE_DATE DESC limit 1)
     </select>
   
+  <!--검색창  -->
+  <select id="getSearch" resultType="com.btone.web.home.domain.board.vo.Board">
+  	SELECT * FROM   BOARD where ${type} = #{search}
+  </select>
   
 </mapper>

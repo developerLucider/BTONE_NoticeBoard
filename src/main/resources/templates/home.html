@@ -6,9 +6,66 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BTONE_NOTICEBOARD</title>
+<<<<<<< Updated upstream
+=======
+<style type="text/css">
+	#table{
+		margin: 0 auto;
+		text-align: center;
+		widows: 700px;
+		font: 20px bold;
+		border: 0.5px solid;
+	}
+</style>
+>>>>>>> Stashed changes
 
 <script th:inline="javascript">
+	function fn_search(){
+		
+		$.ajax({
+			url : "/getSearch", //액션역할.
+			type : "post", // 보내는 타입 형식
+			dataType : "json", //데이터 타임
+			data : {     // 받을 데이터 : 폼데이터
+					"search" : $("#search").val(), //input 검색
+					"type" : $("#searchType option:selected").val()}, //select 옵션
+				
+					success : function(data) { //아래와 같은 데이터 형식으로 가져올거임!
 
+						if (data.length > 0) {
+							var result = "";
+
+							$(".section").empty(); //기존 리스트 비우기
+
+							for ( var i in data) { // 검색결과 리스트 순서대로 출력
+								result += "<table id='table'>"
+								result += "<tr>"
+								result += "<th>제목</th>"
+								result += "<th>내용</th>"
+								result += "<th >작성일</th>"
+								result += "</tr>"								
+								result += "<tr>"
+								result += "<th id='boardTitle'>" + data[i].boardTitle
+										+ "</th>"
+								result += "<th id='boardContent'>" + data[i].boardContent
+										+ "</th>"
+								result += "<th id='createDate'>" + data[i].createDate
+										+ "</th>"
+								result += "</tr>"
+								result += "</table>"
+							}
+
+							$(".section").append(result); // 검색 결과 table에 적용
+
+						} else {
+							alert("검색 결과가 없습니다.");
+						}
+					},
+					error : function(xhr, status, error) {
+						alert("에러발생");
+					}
+		});
+	}
 </script>
 </head>
 
@@ -17,11 +74,19 @@
 		<div class="img-bg rellax">
 			<img src="images/hero_2.jpg" alt="Image" class="img-fluid">
 		</div>
-		<div class="container">
+		<div class="container" >
 			<div class="row align-items-center justify-content-start">
 				<div class="col-lg-6 mx-auto text-center">
 					<h1 class="heading" data-aos="fade-up">메인</h1>
 					<p class="mb-4" data-aos="fade-up">메인페이지 설명</p>
+					<select id="searchType" name="searchType">
+						<!-- <option value="">--통합검색--</option> -->
+						<option value="BOARD_TITLE">글 제목</option>
+						<option value="BOARD_CONTENT">글 내용</option>
+						<option value="CREATE_DATE">작성일</option>
+					</select>
+					<input type="text" id="search" name="search">
+					<button lass="cta-button" onclick="fn_search();"> 검색 </button>
 				</div>
 			</div>
 		</div>
@@ -31,7 +96,7 @@
 		<div class="container">
 			<div class="row align-items-stretch">
 							
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400" th:each="list : ${list}">
+				<div id="temp" class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400" th:each="list : ${list}">
 					<div class="media-entry">
 						<div class="bg-white m-body" >
 							<span class="date" th:text="${list.createDate}"></span>

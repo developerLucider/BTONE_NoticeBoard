@@ -10,6 +10,8 @@
 		(select * from BOARD where C_NO = 2 ORDER by CREATE_DATE DESC limit 1)
 		union all
 		(select * from BOARD where C_NO = 3 ORDER by CREATE_DATE DESC limit 1)
+		union all
+		(select * from BOARD where C_NO = 4 ORDER by CREATE_DATE DESC limit 1)
     </select>
   
   <!--검색창  -->

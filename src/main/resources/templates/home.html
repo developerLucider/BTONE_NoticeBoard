@@ -6,8 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BTONE_NOTICEBOARD</title>
-<<<<<<< Updated upstream
-=======
 <style type="text/css">
 	#table{
 		margin: 0 auto;
@@ -17,7 +15,6 @@
 		border: 0.5px solid;
 	}
 </style>
->>>>>>> Stashed changes
 
 <script th:inline="javascript">
 	function fn_search(){
@@ -40,9 +37,9 @@
 							for ( var i in data) { // 검색결과 리스트 순서대로 출력
 								result += "<table id='table'>"
 								result += "<tr>"
-								result += "<th>제목</th>"
-								result += "<th>내용</th>"
-								result += "<th >작성일</th>"
+								result += "<th width='200px'>제목</th>"
+								result += "<th width='300px'>내용</th>"
+								result += "<th width='200px'>작성일</th>"
 								result += "</tr>"								
 								result += "<tr>"
 								result += "<th id='boardTitle'>" + data[i].boardTitle
@@ -100,7 +97,7 @@
 					<div class="media-entry">
 						<div class="bg-white m-body" >
 							<span class="date" th:text="${list.createDate}"></span>
-							<h3 th:text="${listStat.count}" >번째 최신글</h3>
+							<h3><a th:text="${listStat.count}"></a>번째 최신글</h3>
 							<h3 th:text="${list.boardNo}" ></h3>
 							<h3 th:text="${list.boardTitle}" ></h3>
 							<p th:text="${list.boardContent}"></p>

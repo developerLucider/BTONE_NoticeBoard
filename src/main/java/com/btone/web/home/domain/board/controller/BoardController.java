@@ -31,7 +31,7 @@ import com.btone.web.home.domain.board.service.BoardService;
 import com.btone.web.home.domain.board.vo.Board;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/board")
 public class BoardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
@@ -48,8 +48,8 @@ public class BoardController {
 	}
 
 //	글상세보기
-	@RequestMapping(value="/{bno}")	
-	public String Showinfo(@PathVariable int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	@GetMapping(value="/{bno}")	
+	public String Showinfo(@PathVariable("bno") int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- info 진입");		
 		Board info = boardService.getBoardInfo(bno);
 		model.addAttribute("info", info);
@@ -71,7 +71,7 @@ public class BoardController {
 	String fileConfigPath;
 	
 	@ResponseBody
-	@PostMapping("/upload/fileUpload.do")
+	@PostMapping(value="/upload/fileUpload.do")
 	public Map fileUpload(@RequestParam(value = "uploadFiles", required = false) List<MultipartFile> files, ModelMap model)
 			throws IOException {
 		
@@ -96,7 +96,7 @@ public class BoardController {
 	}
 
 	// 파일의 경로를 찾아서 떨구는 기능
-	@GetMapping("/upload/fileDownload.do")
+	@GetMapping(value="/upload/fileDownload.do")
 	public void downloadAttach(@RequestParam("filePath") String fileinfo, @RequestParam("fileName") String fileName,
 			HttpServletResponse response) throws IOException {
 

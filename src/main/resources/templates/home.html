@@ -39,7 +39,7 @@
 							<h3 th:text="${list.boardNo}" ></h3>
 							<h3 th:text="${list.boardTitle}" ></h3>
 							<p th:text="${list.boardContent}"></p>
-							<a th:href="@{/{bno}(bno=${list.boardNo})}" class="more d-flex align-items-center float-start">
+							<a th:href="@{/board/{bno}(bno=${list.boardNo})}" class="more d-flex align-items-center float-start">
 								<span class="label">자세히 읽기</span>
 								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
 							</a>							

@@ -43,13 +43,13 @@
 <body>
 	<div class="hero overlay">
 		<div class="img-bg rellax">
-			<img src="images/hero_2.jpg" alt="Image" class="img-fluid">
+			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
 		</div>
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
-				<div class="col-lg-5">
-					<h1 class="heading" data-aos="fade-up">여기에 카테고리 번호와 이름을 넣는다.</h1>
-					<p class="mb-5" data-aos="fade-up">컨텐츠 자유 입력(게시글 조회, 검색등)</p>
+				<div class="col-lg-5"  th:each="list : ${list}">
+					<h1 class="heading" data-aos="fade-up" th:text="${list.cName}"></h1>
+					<p class="mb-5" data-aos="fade-up">반갑습니다.~~~ 게시판입니다~!</p>
 				</div>
 			</div>
 		</div>		
@@ -59,17 +59,16 @@
 		<div class="container">
 		
 	<ul id="posts"> <!-- 한무 페이징 시작 -->
-		<li>
+		<li  th:each="list : ${list}">
 			<article>
-					<div class="row" th:each="list : ${list}" >
+					<div class="row">
 				<div class="col-lg-3 mb-4 mb-lg-0">
 					<div class="heading-content" data-aos="fade-up">
 						<h2 th:text="${list.boardTitle}"></h2>
 						<p>글 작성일</p>
 						<p th:text="${list.createDate}"></p>
-						<p>글 수정일</p>
-						<p th:text="${list.updateDate}"></p>
-						<!-- <p class="my-4" data-aos="fade-up" data-aos-delay="300"><a href="#" class="btn btn-primary">View All</a></p> -->
+						<p>작성자</p>
+						<p th:text="${list.userName}"></p>
 					</div>
 				</div>
 				<div class="col-lg-9">
@@ -97,7 +96,7 @@
 	</ul>
 	<center>
 	<p id="loding">
-		<img src="images/loading.gif">
+		<img src="/images/loading.gif">
 	</p>
 	</center>
 			

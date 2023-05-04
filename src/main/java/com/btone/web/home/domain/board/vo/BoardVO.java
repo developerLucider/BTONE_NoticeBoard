@@ -21,5 +21,8 @@ public class BoardVO {
 	private String createDate;
 	private String updateDate;
 	
+	private String cName;
+	private String userName;
+	
 
 }

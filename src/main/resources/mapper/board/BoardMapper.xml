@@ -17,17 +17,24 @@
   	</select>
     
    <select id="selectBoard" resultType="com.btone.web.home.domain.board.vo.BoardVO">
-	SELECT 
-		 BOARD_NO
-		,C_NO
-		,USER_NO
-		,BOARD_TITLE
-		,BOARD_CONTENT
-		,CREATE_DATE
-		,UPDATE_DATE
-		,BOARD_HITS
-		FROM BOARD
-		WHERE C_NO=#{cNo}
+	select 
+		 b.board_no
+		,b.c_no
+		,c.c_name
+		,b.user_no
+		,u.user_name
+		,b.board_title
+		,b.board_content
+		,b.create_date
+		,b.update_date
+		,b.board_hits
+		from board b
+		inner join category c
+		on b.c_no = c.c_no 
+		inner join user u 
+		on b.USER_NO = u.USER_NO 
+		where b.C_NO  = #{cNo}
+		
 	</select>
   
   

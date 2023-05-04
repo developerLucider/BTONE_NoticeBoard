@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
 import com.btone.web.home.domain.home.mapper.HomeMapper;
 import com.btone.web.home.domain.test.TestMapper;
 
@@ -42,7 +43,15 @@ public class HomeService {
 		return searchList;
 	}
 	
-	
+	public List<Category> getCate(){
+		
+		//카테고리 리스트 가져오기
+		List<Category> cateList = homeMapper.getCate();
+				
+		logger.debug(" 카테고리 리스트 : {}", cateList);
+		
+		return cateList;
+	}
 
 
 }

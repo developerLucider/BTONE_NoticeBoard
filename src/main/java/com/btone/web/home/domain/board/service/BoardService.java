@@ -45,10 +45,12 @@ public class BoardService {
 		return result;
 	}
 	
-	public List<BoardVO> selectBoard(){
+	public List<BoardVO> selectBoard(int cNo){
 		logger.debug("--------------셀렉트 보드 서비스 진입");
 		
-		List<BoardVO> selectBoard = boardMapper.selectBoard();
+		logger.debug("mapper 타기 전 카테고리 넘버 : {}", cNo);
+		
+		List<BoardVO> selectBoard = boardMapper.selectBoard(cNo);
 		
 		logger.debug("셀렉트 보드 서비스 결과 : {}", selectBoard);
 		

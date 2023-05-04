@@ -29,11 +29,9 @@
 							<li><a th:if="${session.loginUser != null}" href="/login/logout.do">로그아웃</a></li>
 							<li><a th:if="${session.loginUser == null}" href="/join">회원가입</a></li>
 							<li class="has-children">
-								<a href="/contents">Topic</a>
+								<a>카테고리</a>
 								<ul class="dropdown">
-									<li><a href="/boardOne">Menu 원</a></li>     <!--  클릭하면 카테고리별 리스트로 넘어가도록 -->
-									<li><a href="#">Menu Two</a></li>								
-									<li><a href="#">Menu Three</a></li>
+									<li  th:each="cate : ${cate}"><a th:href="@{/boardCate/{cNo}(cNo=${cate.cNo})}" th:text="${cate.cNo} + '. ' + ${cate.cName}"></a></li>     
 								</ul>
 							</li>						
 						</ul>

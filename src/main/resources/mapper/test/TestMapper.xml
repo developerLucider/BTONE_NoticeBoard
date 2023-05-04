@@ -19,4 +19,11 @@
   	SELECT * FROM   BOARD where ${type} = #{search}
   </select>
   
+  <select id="getCate" resultType="com.btone.web.home.domain.board.vo.Category">
+    	SELECT 
+		C_NO
+		,C_NAME
+		FROM CATEGORY 
+    </select>
+  
 </mapper>

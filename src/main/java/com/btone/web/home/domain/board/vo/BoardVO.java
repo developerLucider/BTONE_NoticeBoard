@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 public class BoardVO {
 
-	private int board_No;
-	private int c_No;
-	private int user_No;
-	private String board_Title;
-	private String board_Content;
-	private String create_Date;
-	private String update_Date;
+	private int boardNo;
+	private int cNo;
+	private int userNo;
+	private String boardTitle;
+	private String boardContent;
+	private String createDate;
+	private String updateDate;
 	
 
 }

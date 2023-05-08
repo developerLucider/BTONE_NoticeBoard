@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.btone.web.home.domain.certify.mapper.CertifyMapper;
-import com.btone.web.home.domain.findAccount.vo.AccountVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

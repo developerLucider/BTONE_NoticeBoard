@@ -42,21 +42,30 @@ public class HomeController {
 	@GetMapping("/join")
 	public String ShowRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");		
-						
+					
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
+		
 		return "join";
 	}
 	
 	@GetMapping("/login")
 	public String ShowLogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");		
-						
+			
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
+		
 		return "login";
 	}	
 	
 	@GetMapping("/write/{userNo}")
 	public String ShowServices(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- write page 진입");		
-						
+		
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
+		
 		return "writeContents";
 	}
 	
@@ -64,6 +73,9 @@ public class HomeController {
 	public String ShowContents(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");		
 						
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
+		
 		return "contents";
 	}
 	

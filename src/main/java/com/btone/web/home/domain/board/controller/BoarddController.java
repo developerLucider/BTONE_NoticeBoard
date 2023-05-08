@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.btone.web.home.domain.board.service.BoardService;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
+import com.btone.web.home.domain.home.service.HomeService;
 
 @Controller
 
@@ -25,6 +27,9 @@ public class BoarddController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private HomeService homeService;	
+	
 	
 	@GetMapping("/boardCate/{cNo}")
 	public String selectBoard(ModelMap model, @PathVariable int cNo, HttpServletRequest request, HttpServletResponse response)throws Exception{
@@ -32,6 +37,9 @@ public class BoarddController {
 		logger.debug("-------------------셀렉트 보드 컨트롤러 진입");
 		
 		logger.debug("카테고리 넘버 :  {}", cNo);
+		
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
 		
 		List<BoardVO> selectBoard = boardService.selectBoard(cNo);
 		

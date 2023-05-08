@@ -65,7 +65,7 @@
 					<div class="row">
 				<div class="col-lg-3 mb-4 mb-lg-0">
 					<div class="heading-content" data-aos="fade-up">
-						<h2 th:text="${list.boardTitle}"></h2>
+						<a th:href="@{/board/{bno}(bno=${list.boardNo})}"><h2 th:text="${list.boardTitle}"></h2></a>
 						<p>글 작성일</p>
 						<p th:text="${list.createDate}"></p>
 						<p>작성자</p>

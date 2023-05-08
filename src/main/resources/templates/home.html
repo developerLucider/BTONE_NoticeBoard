@@ -98,7 +98,6 @@
 						<div class="bg-white m-body" >
 							<span class="date" th:text="${list.createDate}"></span>
 							<h3><a th:text="${listStat.count}"></a>번째 최신글</h3>
-							<h3 th:text="${list.boardNo}" ></h3>
 							<h3 th:text="${list.boardTitle}" ></h3>
 							<p th:text="${list.boardContent}"></p>
 							<a th:href="@{/board/{bno}(bno=${list.boardNo})}" class="more d-flex align-items-center float-start">

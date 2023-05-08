@@ -21,7 +21,7 @@ public class LoginController {
 		
 	@GetMapping("/find/{type}")
 	public String ShowFirst(@PathVariable("type")String type, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		logger.debug("------------------- homecotroller 진입");
+		logger.debug("------------------- LoginCotroller 진입");
 		logger.debug("type = {}", type);
 		
 		if(type.toString().equals("id")) {

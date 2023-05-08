@@ -30,19 +30,19 @@ public class BoardService {
 	@Value("${file.upload-location}")
     String fileConfigPath;
 
-	public String addContent(Board board) {
+	public int addContent(Board board) {
 		
 		logger.debug("addContent Service 진입");
-		String result = "";
 		
-		int mapper = boardMapper.addContent(board);
-		if(mapper >0) {
-			result = "글이 등록되었습니다.";
-		}else {
-			result = "등록에 실패했습니다.";
-		}
+		int result = boardMapper.addContent(board);
+		logger.debug("result : {}", result);
+		int boardNo = 0;
+		if(result >0) {
+			boardNo = boardMapper.findId();
+		}		
+		logger.debug("boardNo : {}", boardNo);		
 	
-		return result;
+		return boardNo;
 	}
 	
 	public List<BoardVO> selectBoard(){
@@ -63,12 +63,7 @@ public class BoardService {
 
 	}
 	
-	public Map saveFile(MultipartFile multipartFile) throws IOException{
-		
-
-        if (multipartFile.isEmpty()) {
-            return null;
-        }
+	public void saveFile(MultipartFile multipartFile, int boardNo) throws IOException{
 
         String savedFileName = "";
         // 1. 파일 저장 경로 설정 : 실제 서비스되는 위치(프로젝트 외부에 저장)
@@ -97,6 +92,10 @@ public class BoardService {
         UUID uuid = UUID.randomUUID();
         savedFileName = uuid.toString()+"_"+ originalFileName;
         logger.debug("savedFileName     >>  "+savedFileName);
+        
+        String fileType = multipartFile.getContentType();
+        logger.debug("fileType     >>  " +fileType);
+        int bno = boardNo;
 
         //mapper적용해서 db저장하기
 
@@ -109,7 +108,7 @@ public class BoardService {
         resultMap.put("filePathName", uploadPath + savedFileName);
         resultMap.put("serverfileName",savedFileName);
 
-        return resultMap;
+      
 	}
 	public byte[] download(String path) throws IOException {
 

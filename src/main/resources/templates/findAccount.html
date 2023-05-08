@@ -8,6 +8,41 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
+function emailCertification() {
+	var email = $("#mail").val();
+   	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+   	
+   	var frmData = {
+   			"userName" : name,
+   	 	   	"userEmail" : email
+   	} 
+   	
+   	if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
+		   alert("이메일 형식이 유효하지 않습니다.\n" + 
+				 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
+				 "ex)btone@btone.com");
+	} else {
+		alert("이메일인증 준비중");
+	 	/* $.ajax({
+			url : "/login/find/findId.do",
+			dataType : "json",
+			type : "post",
+			contentType : "application/json",
+	        data : JSON.stringify(frmData),
+			success : function(data) {
+				if(data.userId) {
+					alert("찾으시는 계정 ID : " + data.userId);
+				} else if(data.userId == ""){
+					alert("찾으시는 계정은 존재하지 않습니다.")
+				}		    	
+			},
+			error : function(xhr, status, error) {
+				 alert('아이디 찾기 통신 오류');
+			}
+		}); */
+  	}
+}
+
 
 //ID찾기
 function findId() {
@@ -150,10 +185,13 @@ function findPw() {
 						</div>
 						
 						<div class="row">						
-							<label for="mail">E-mail</label>
+							<label for="mail">E-mail</label>							
 							<div class="col-4">
 								<input type="text" id="mail" name="mail">
 								<br>
+							</div>
+							<div class= "col">
+								<input type="button" value="인증하기" class="btn-secondary" onclick="emailCertification();"/>
 							</div>
 						</div>
 						<div class="col-12">

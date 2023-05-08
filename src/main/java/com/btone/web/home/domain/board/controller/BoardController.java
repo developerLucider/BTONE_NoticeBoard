@@ -55,6 +55,9 @@ public class BoardController {
 		logger.debug("------------------- info 진입");		
 		Board info = boardService.getBoardInfo(bno);
 		model.addAttribute("info", info);
+		
+		logger.debug("내가 클릭한 글 번호 : {}", bno);
+		boardService.updateHits(bno);
 
 		logger.debug(" {} :", bno);
 		

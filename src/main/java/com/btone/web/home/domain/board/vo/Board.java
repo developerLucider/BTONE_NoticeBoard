@@ -25,6 +25,7 @@ public class Board {
 	private String boardContent;
 	private LocalDate createDate;
 	private LocalDate updateDate;
+	//조회수
 	private int boardHits;
 
 }

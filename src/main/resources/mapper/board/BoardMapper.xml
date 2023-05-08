@@ -51,4 +51,12 @@
 		SELECT * FROM BOARD WHERE BOARD_NO = #{bno}
 	</select>
 
+	
+	<update id="updateHits" parameterType="int">
+		UPDATE BOARD SET BOARD_HITS = BOARD_HITS + 1 
+		WHERE BOARD_NO = #{BNO}
+	</update>
+	
+  
+  
 </mapper>

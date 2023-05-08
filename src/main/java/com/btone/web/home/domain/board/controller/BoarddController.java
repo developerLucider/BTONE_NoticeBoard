@@ -38,9 +38,6 @@ public class BoarddController {
 		
 		logger.debug("카테고리 넘버 :  {}", cNo);
 		
-		List<Category> cateList = homeService.getCate();
-		model.addAttribute("cate", cateList);
-		
 		List<BoardVO> selectBoard = boardService.selectBoard(cNo);
 		
 		logger.debug("셀렉트 보드 리스트 :  {}", selectBoard);
@@ -48,6 +45,9 @@ public class BoarddController {
 		model.addAttribute("list", selectBoard);
 		
 		model.addAttribute("cName", selectBoard.get(cNo).getCName());
+		
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
 		
 		logger.debug("셀렉트 보드 컨트롤러 결과 : {}", selectBoard);
 			

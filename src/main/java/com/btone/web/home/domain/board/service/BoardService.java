@@ -45,6 +45,15 @@ public class BoardService {
 		return boardNo;
 	}
 	
+	//조회수
+		public int updateHits(int bno) {
+			logger.debug("조회수 증가 서비스 진입 : {}", bno);
+			
+			int row = boardMapper.updateHits(bno);
+			
+			return row;
+		}
+	
 	public List<BoardVO> selectBoard(int cNo){
 		logger.debug("--------------셀렉트 보드 서비스 진입");
 		
@@ -124,4 +133,6 @@ public class BoardService {
 		return fileByte;
 
 	}
+	
+	
 }

@@ -41,7 +41,7 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping(value="/addContent.do")
-	public String addContent (@RequestBody Board board) throws Exception{
+	public int addContent (@RequestBody Board board) throws Exception{
 		logger.debug("addContent 진입");
 		return boardService.addContent(board);
 		
@@ -72,27 +72,17 @@ public class BoardController {
 	
 	@ResponseBody
 	@PostMapping(value="/upload/fileUpload.do")
-	public Map fileUpload(@RequestParam(value = "uploadFiles", required = false) List<MultipartFile> files, ModelMap model)
+	public void fileUpload(@RequestParam(value = "uploadFiles", required = false) List<MultipartFile> files, @RequestParam(value="boardNo") int boardNo, ModelMap model)
 			throws IOException {
 		
-		logger.debug("files", files);
+		logger.debug("files : {}", files);		
 		
-		List<Map> resultListMap = new ArrayList<Map>();
-		if (files != null) { // 다건처리
-			for (MultipartFile multipartFile : files) {
-				Map fileMap = new HashMap();
-				fileMap = boardService.saveFile(multipartFile);
-
-				if (!fileMap.isEmpty())
-					resultListMap.add(fileMap);
+		if (files != null) { // 파일이 존재 한다면 
+			for (MultipartFile multipartFile : files) {				
+				 boardService.saveFile(multipartFile, boardNo);			//파일목록을 하나씩 저장.			
 			}
 		}	
-
-		Map resultMap = new HashMap();
-
-		resultMap.put("list", resultListMap);
-
-		return resultMap;
+		
 	}
 
 	// 파일의 경로를 찾아서 떨구는 기능

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.btone.web.home.domain.board.mapper.BoardMapper">
+<mapper
+	namespace="com.btone.web.home.domain.board.mapper.BoardMapper">
 
-	<insert id="addContent" parameterType ="com.btone.web.home.domain.board.vo.Board">
+	<insert id="addContent"
+		parameterType="com.btone.web.home.domain.board.vo.Board">
 		insert into board (
-		 c_no,user_no, board_title,board_content, create_date, update_date, board_hits
-		) values(
-		#{categoryNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
+		c_no,user_no, board_title,board_content,
+		create_date, update_date, board_hits
 		)
+
     </insert>
     
-    
-  	<select id="getBoardInfo" resultType ="com.btone.web.home.domain.board.vo.Board">
-  		SELECT * FROM BOARD WHERE BOARD_NO = #{bno}
-  	</select>
     
    <select id="selectBoard" resultType="com.btone.web.home.domain.board.vo.BoardVO">
 	select 
@@ -35,7 +33,22 @@
 		on b.USER_NO = u.USER_NO 
 		where b.C_NO  = #{cNo}
 		
+
+		values(
+		#{cNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
+		)
+</select>
+
+	<select id="findId" resultType="Integer">
+	select max(board_no) from board
 	</select>
-  
-  
+
+
+	<select id="getBoardInfo"
+		resultType="com.btone.web.home.domain.board.vo.Board">
+		SELECT * FROM BOARD WHERE BOARD_NO = #{bno}
+	</select>
+
+
+
 </mapper>

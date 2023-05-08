@@ -19,7 +19,7 @@ public class CertifyService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CertifyService.class);
 	
-	private final CertifyMapper certifyMapper;
+	//private final CertifyMapper certifyMapper;
 	  
 	public int sendCertNo(HttpSession session, String userEmail) {
 		

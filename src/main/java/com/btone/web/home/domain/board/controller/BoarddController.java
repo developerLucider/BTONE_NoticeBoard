@@ -39,6 +39,8 @@ public class BoarddController {
 		
 		model.addAttribute("list", selectBoard);
 		
+		model.addAttribute("cName", selectBoard.get(cNo).getCName());
+		
 		logger.debug("셀렉트 보드 컨트롤러 결과 : {}", selectBoard);
 			
 			

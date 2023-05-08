@@ -14,7 +14,6 @@ import lombok.Setter;
 public class Category {
 
 	private int cNo;
-
 	private String cName;
 	
 }

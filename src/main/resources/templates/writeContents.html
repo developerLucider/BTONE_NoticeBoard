@@ -28,84 +28,44 @@
 		if (!userNo) {
 			alert("글쓰기 권한이 없습니다.");
 		} else {
-			
-		$.ajax({
-			url : "/board/addContent.do",
-			type : "post",
-			contentType : "application/json",
-			data : JSON.stringify(vo),
-			success : function(result) { // 글등록 성공후 
-				console.log("result: ", result); //방금 등록한 글의 번호받아서 
 
-				var file = $('#fileUploadForm');
-				/* if (file) { // 파일이 있다면 				
-					var frm = {
-						uploadFiles : file,
-						boardNo : result
-					};
-					$.ajax({
-						url : "/board/upload/fileUpload.do",
-						type : "post",
-						data : frm,
-						success : function(data) {
-							
-							alert("글이 등록되었습니다.");
-							location.href = "/contents";
-						}
-					});
-				} */
+			$.ajax({
+				url : "/board/addContent.do",
+				type : "post",
+				contentType : "application/json",
+				data : JSON.stringify(vo),
+				success : function(result) { // 글등록 성공후 
+					console.log("result: ", result); //방금 등록한 글의 번호받아서 
+
+					var file = $('#fileUploadForm');
+					/* if (file) { // 파일이 있다면 				
+						var frm = {
+							uploadFiles : file,
+							boardNo : result
+						};
+						$.ajax({
+							url : "/board/upload/fileUpload.do",
+							type : "post",
+							data : frm,
+							success : function(data) {
+								
+								alert("글이 등록되었습니다.");
+								location.href = "/contents";
+							}
+						});
+					} */
 					alert("글이 등록되었습니다.");
 					location.href = "/contents";
-				
-			},
-			error : function(e) {
-				alert("글등록 실패");
-			}
-		});
+
+				},
+				error : function(e) {
+					alert("글등록 실패");
+				}
+			});
+		}
 	}
 
 	/*]]>*/
-
-	//파일전송 후 실행할 콜백 함수
-	function ImguploadCallback(data, state) {
-
-		if (state == "error") {
-			alert("이미지 전송중 예외가 발생하였습니다.\n관리자에게 문의해주세요.");
-			return false;
-		}
-
-		var list = data.list;
-		//var list = data;
-		var htmlBody = "";
-		//htmlBody += " 	<h3>파일 다운로드</h3>";
-		htmlBody += " 	  <div id='filesDownload'>";
-		for (i = 0; i < list.length; i++) {
-
-			var item = list[i];
-			htmlBody += " 		<p>";
-			htmlBody += " 		<a href=/board/upload/fileDownload.do?filePath="
-					+ item["serverfileName"] + "&fileName="
-					+ item["originalFileName"] + ">" + item["originalFileName"]
-					+ " 파일다운로드" + (i + 1) + "</a>";
-			htmlBody += "        </p>";
-		}
-		htmlBody += " 	  </div>";
-
-		$("#fileView").append(htmlBody);
-
-	}
-
-	// 파일업로드 이벤트
-	function fn_fileUploaded() {
-
-		//폼전송
-		var frm;
-		frm = $('#fileUploadForm');
-		frm.attr("method", "post");
-		frm.attr("action", "/board/upload/fileUpload.do");
-		frm.ajaxForm(); //파일전송 후 실행할 콜백함수 지정	
-
-	}
 </script>
 </head>
 
@@ -141,6 +101,7 @@
 							<option value="1">유머</option>
 							<option value="2">이직고민</option>
 							<option value="3">취미생활</option>
+							<option value="4">자유게시판</option>
 						</select>
 					</div>
 					<div class="col-12 mb-3">
@@ -165,14 +126,14 @@
 						<button type="button" class="btn btn-primary"
 							onclick="location.href='contents.html'">취소</button>
 					</div>
-				
-					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 
 
-	<!-- /.untree_co-section -->
+<!-- /.untree_co-section -->
 </html>

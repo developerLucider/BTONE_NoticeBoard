@@ -43,6 +43,8 @@ public class BoardController {
 	@RequestMapping(value="/addContent.do")
 	public int addContent (@RequestBody Board board) throws Exception{
 		logger.debug("addContent 진입");
+		logger.debug("board : {}", board);
+		
 		return boardService.addContent(board);
 		
 	}

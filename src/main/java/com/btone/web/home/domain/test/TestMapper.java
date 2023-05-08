@@ -1,4 +1,4 @@
-package com.btone.web.home.mapper;
+package com.btone.web.home.domain.test;
 
 import org.apache.ibatis.annotations.Mapper;
 

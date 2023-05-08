@@ -6,23 +6,24 @@
 <title>default layout</title>
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="css/tiny-slider.css">
-	<link rel="stylesheet" href="css/aos.css">
-	<link rel="stylesheet" href="css/flatpickr.min.css">
-	<link rel="stylesheet" href="css/glightbox.min.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="/css/tiny-slider.css">
+	<link rel="stylesheet" href="/css/aos.css">
+	<link rel="stylesheet" href="/css/flatpickr.min.css">
+	<link rel="stylesheet" href="/css/glightbox.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </th:block>
 
 <th:block layout:fragment="fonts">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+	<link rel="stylesheet" href="/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="/fonts/flaticon/font/flaticon.css">
 </th:block>
-
 <th:block layout:fragment="script">
+	<!--    <script th:src="@{/js/page/home.js}"></script>-->
 	<script th:src="@{/js/jquery-1.12.4.min.js}"></script>
 	<script th:src="@{/js/jquery.form.js}"></script>
 	<script th:src="@{/js/jquery-ui.js}"></script>
 </th:block>
+
 </head>
 <body>
 	<th:block th:replace="fragments/header :: headerFragment"></th:block>

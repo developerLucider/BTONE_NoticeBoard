@@ -1,8 +1,13 @@
-package com.btone.web.home.controller;
+package com.btone.web.home.domain.home.controller;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.Category;
+import com.btone.web.home.domain.home.service.HomeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +15,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.btone.web.home.service.HomeService;
-
 @Controller
 public class HomeController {
 	
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
 	@Autowired
 	private HomeService homeService;
 	
 	@GetMapping("/")
 	public String ShowFirst(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- homecotroller 진입");		
+		List<Board> list = homeService.getList();
+		model.addAttribute("list", list);
 		
-		String res = homeService.getTestString();
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
+		
+		
+		logger.debug("list: {}", list);
 				
-		logger.debug("컨트롤러 테스트 결과 : {}", res);
-				
+		logger.debug("컨트롤러 카테고리 리스트: {}", cateList);
 		return "home";
 	}
 	
@@ -46,9 +53,9 @@ public class HomeController {
 		return "login";
 	}	
 	
-	@GetMapping("/write")
+	@GetMapping("/write/{userNo}")
 	public String ShowServices(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		logger.debug("------------------- homecotroller 진입");		
+		logger.debug("------------------- write page 진입");		
 						
 		return "writeContents";
 	}

@@ -11,6 +11,26 @@
 <script th:inline="javascript">
 	
 </script>
+<style type="text/css">
+#th{
+	font: 20px bold;
+}
+#table{
+	width: 100%;
+	margin-bottom: 30px;
+}
+#th, #td {
+    border: 1px solid #444444;
+    padding: 10px;
+    width: 100%;
+  }
+#first_th{
+	font: 30px bold;
+	margin-bottom: 60px;
+}
+
+
+</style>
 </head>
 
 <div layout:fragment="content">
@@ -32,13 +52,22 @@
 		<div class="container">
 			<div class="row align-items-stretch">
 				<div class="col-12 mb-3">
-					<table>
+					<h1 id="first_th"><a th:text="${info.cName}"></a>게시판</h1>
+					<table id="table">
+					
 						<tr>
-							<th th:text="${info.boardTitle}"></th>
+							<th><a class="date" th:text="${info.createDate}"></a></th>
 						</tr>
 						<tr>
-							<td th:text="${info.boardContent}"></td>
+							<th>작성자 : <a th:text="${info.userId}" ></a></th>
 						</tr>
+						<tr>
+							<th id="th" th:text="${info.boardTitle}"></th>
+						</tr>
+						<tr>
+							<td id="td" th:text="${info.boardContent}"></td>
+						</tr>
+							<th>조회수 : <a class="date" th:text="${info.boardHits}" ></a></th>
 					</table>
 						<button type="button" onclick="">수정</button>
 						<button type="button" onclick="">삭제</button>

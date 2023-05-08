@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.service.BoardService;
 import com.btone.web.home.domain.board.vo.Board;
 
@@ -53,7 +54,7 @@ public class BoardController {
 	@GetMapping(value="/{bno}")	
 	public String Showinfo(@PathVariable("bno") int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- info 진입");		
-		Board info = boardService.getBoardInfo(bno);
+		infoDTO info = boardService.getBoardInfo(bno);
 		model.addAttribute("info", info);
 		
 		logger.debug("내가 클릭한 글 번호 : {}", bno);

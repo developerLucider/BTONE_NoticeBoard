@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.mapper.BoardMapper;
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.BoardVO;
@@ -67,8 +68,8 @@ public class BoardService {
 	}
 
 	//	글 상세보기
-	public Board getBoardInfo(int bno) {
-		Board info = boardMapper.getBoardInfo(bno);
+	public infoDTO getBoardInfo(int bno) {
+		infoDTO info = boardMapper.getBoardInfo(bno);
 		
 		return info;
 

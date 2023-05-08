@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.BoardVO;
 
@@ -15,8 +16,8 @@ public interface BoardMapper {
 	int addContent(Board board);
 	int findId();
 
-	Board getBoardInfo(int bno);
 	
 	//조회수
 	int updateHits(int bno);
+	infoDTO getBoardInfo(int bno);
 }

@@ -15,4 +15,7 @@ public interface BoardMapper {
 	int addContent(Board board);
 
 	Board getBoardInfo(int bno);
+	
+	//조회수
+	int updateHits(int bno);
 }

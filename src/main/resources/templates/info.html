@@ -9,7 +9,52 @@
 <style>
 </style>
 <script th:inline="javascript">
-	
+	$(document).ready(function() {
+		/*<![CDATA[*/
+
+		var session = /*[[${session}]]*/"${session}";
+		const userNo = session.loginUser.userNo; //login정보에서 userNo추출
+
+		console.log("session: ", JSON.stringify(session));
+		console.log("loginUser : ", session.loginUser);
+		console.log("userNo : ", userNo);
+
+		var board = /*[[${info}]]*/"board"; // model에 담겨온 게시글 정보
+		var b_userNo = board.userNo;
+		console.log("board: ", JSON.stringify(board));
+		console.log("b_userNo : ", b_userNo);
+
+		if (!session.loginUser || userNo !== b_userNo) {
+			$(".user").hide();
+		}
+
+		/*]]>*/
+	});
+	/*<![CDATA[*/
+	function fn_deleteContent() {
+		var board = /*[[${info}]]*/"board";
+		var boardNo = {boardNo:board.boardNo};
+		
+		console.log("boardNo: ", boardNo);
+		
+		var check = confirm("정말 삭제 하시겠습니까?");
+		if(check === true){
+
+			$.ajax({
+				url : "/board/deleteContent.do",
+				type : "get",
+				data : boardNo,
+				success : function() { 
+					alert("삭제 되었습니다.");
+					location.href = "/contents";
+				},
+				error : function(e) {
+					alert("삭제 할 수 없습니다.");
+				}
+			});
+		}
+	}
+	/*]]>*/
 </script>
 <style type="text/css">
 #th{
@@ -69,10 +114,11 @@
 						</tr>
 							<th>조회수 : <a class="date" th:text="${info.boardHits}" ></a></th>
 					</table>
-						<button type="button" onclick="">수정</button>
-						<button type="button" onclick="">삭제</button>
-					
-				
+					<a th:href="@{/board/update/{boardNo}(boardNo=${info.boardNo})}"><button
+							th:if="${session.loginUser != null}" type="button" class="user">수정</button></a>
+					<button th:if="${session.loginUser != null}" type="button" onclick="fn_deleteContent();" class="user">삭제</button>
+
+
 					<!-- onclick으로 댓글 리스트 보이게 작성 -->
 					<button type="button" class="btn btn-primary" onclick="">댓글보기▼</button>
 					<div>

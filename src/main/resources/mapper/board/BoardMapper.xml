@@ -34,7 +34,8 @@
 		inner join
 		category c
 		on b.c_no = c.c_no
-		inner join user u
+		inner
+		join user u
 		on b.USER_NO = u.USER_NO
 		where b.C_NO = #{cNo}
 
@@ -58,13 +59,30 @@
 		
 		<!-- SELECT * FROM BOARD WHERE BOARD_NO = #{bno} -->
 	</select>
-
 	
 	<update id="updateHits" parameterType="int">
 		UPDATE BOARD SET BOARD_HITS = BOARD_HITS + 1 
 		WHERE BOARD_NO = #{BNO}
+	</update>  
+
+	<select id="selectCategory"
+		resultType="com.btone.web.home.domain.board.vo.Category">
+		select * from category
+	</select>
+	<update id="updateContent"
+		parameterType="com.btone.web.home.domain.board.vo.Board">
+		
+		update board set 
+		c_no = #{cNo}, 
+		board_title=#{boardTitle}, 
+		board_content=#{boardContent},
+		update_date = now()
+		where 
+		board_no = #{boardNo}
+
 	</update>
-	
-  
-  
+	<delete id="deleteContent" parameterType="int">
+	delete from board where board_no = #{boardNo}
+	</delete>
+
 </mapper>

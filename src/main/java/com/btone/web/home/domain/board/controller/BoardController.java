@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.service.BoardService;
 import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.Category;
 
 @Controller
 @RequestMapping("/board")
@@ -40,11 +42,22 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	
+	/**
+	 * 글 등록
+	 * @author sojin
+	 * @param board
+	 * @return int (해당게시글의 번호PK)
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping(value="/addContent.do")
 	public int addContent (@RequestBody Board board) throws Exception{
 		logger.debug("addContent 진입");
 		logger.debug("board : {}", board);
+		//textarea에서 enter로 입력된 내용이 select할때는 공백으로 처리되어 나오기 때문에 html태그인 <br>로 바꿔서 DB에 저장.
+		String row = ((String)board.getBoardContent()).replace("\r\n","<br>");
+		board.setBoardContent(row);
 		
 		return boardService.addContent(board);
 		
@@ -64,6 +77,58 @@ public class BoardController {
 		
 		return "info";
 	}
+	
+	/**
+	 * 글 수정페이지 연결
+	 * @author sojin
+	 * @param boardNo
+	 * @param model
+	 * @return 수정페이지경로
+	 * @throws Exception
+	 */
+	@GetMapping(value="/update/{boardNo}")
+	public String updateForm(@PathVariable int boardNo, Model model)throws Exception{
+		logger.debug("updateForm 진입");
+		logger.debug("boardNo:{}", boardNo);
+		
+		Board board = boardService.getBoardInfo(boardNo);   //게시글 정보
+		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
+		model.addAttribute("board", board);
+		model.addAttribute("list", list);		
+		
+		logger.debug("board :{}", board);
+		
+		return "updateForm";		
+	}
+	
+	/**
+	 * 글 수정 
+	 * @author sojin
+	 * @param board
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@PostMapping(value="/updateContent.do")
+	public String updateContent(@RequestBody Board board) throws Exception{
+		logger.debug("updateContent 진입");
+		logger.debug("board : {}", board);
+		return boardService.updateContent(board);
+	}
+	/**
+	 * 글 삭제
+	 * @author sojin
+	 * @param boardNo
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value="/deleteContent.do")
+	public void deleteContent(@RequestParam("boardNo") int boardNo) throws Exception{
+		logger.debug("deleteContent 진입");
+		logger.debug("boardNo : {}", boardNo);
+		boardService.deleteContent(boardNo);
+	}	
+	
 	
 	/**
 	 * @author sojin

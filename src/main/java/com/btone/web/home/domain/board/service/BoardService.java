@@ -19,6 +19,7 @@ import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.mapper.BoardMapper;
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
 
 @Service
 public class BoardService {
@@ -30,7 +31,13 @@ public class BoardService {
 	
 	@Value("${file.upload-location}")
     String fileConfigPath;
-
+	
+	/**
+	 * 글 등록 서비스
+	 * @author sojin
+	 * @param board
+	 * @return
+	 */
 	public int addContent(Board board) {
 		
 		logger.debug("addContent Service 진입");
@@ -134,6 +141,27 @@ public class BoardService {
 		return fileByte;
 
 	}
-	
-	
+
+
+	public List<Category> categoryList() {
+		
+		return boardMapper.selectCategory();
+	}
+
+	public String updateContent(Board board) {
+		String result = "";
+		
+		logger.debug("updateContent Service 진입");
+		int val = boardMapper.updateContent(board);
+		
+		result = val>0 ? "수정 되었습니다.":"수정 실패";
+		
+		return result;
+	}
+
+	public void deleteContent(int boardNo) {
+		boardMapper.deleteContent(boardNo);
+		
+	}
+
 }

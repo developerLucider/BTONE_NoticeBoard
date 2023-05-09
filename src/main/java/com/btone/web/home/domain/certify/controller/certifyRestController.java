@@ -17,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(value = "/certify")
 @RestController
-public class CertifyRestController {
+public class certifyRestController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CertifyRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(certifyRestController.class);
 	
 	private final CertifyService certifyService;
 		

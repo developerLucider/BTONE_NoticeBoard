@@ -23,7 +23,7 @@ public class CertifyRestController {
 	
 	private final CertifyService certifyService;
 		
-	//ID 찾기
+	//이메일 인증번호 전송
 	@RequestMapping("/Email.do")
 	public int sendCertNo(@RequestParam("userEmail") String userEmail, HttpServletRequest request, Model model){
 		

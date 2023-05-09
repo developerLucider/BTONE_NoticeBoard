@@ -102,11 +102,18 @@ public class BoardController {
 		
 		infoDTO info = boardService.getBoardInfo(boardNo);   //게시글 정보
 		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
+<<<<<<< Updated upstream
 
 
 		model.addAttribute("board", info);
 		model.addAttribute("cate", list);		
 
+=======
+		model.addAttribute("board", info);
+		model.addAttribute("cate", list);		
+		
+		logger.debug("board :{}", info);
+>>>>>>> Stashed changes
 		
 		logger.debug("board :{}", info);
 

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
 
 @Mapper
 public interface BoardMapper {
@@ -13,7 +14,14 @@ public interface BoardMapper {
 	List<BoardVO> selectBoard(int cNo);
 	
 	int addContent(Board board);
+	
 	int findId();
 
 	Board getBoardInfo(int bno);
+
+	List<Category> selectCategory();
+
+	int updateContent(Board board);
+
+	void deleteContent(int boardNo);
 }

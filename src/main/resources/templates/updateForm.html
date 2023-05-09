@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/write}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BTONE_NOTICEBOARD</title>
+
+<script th:inline="javascript">
+
+$(document).ready(function(){	
+/*<![CDATA[*/
+    var board =/*[[${board}]]*/ "board";    // model에 담겨온 게시글 정보
+    var cNo = board.cNo;                    // 게시글의 카테고리번호
+    $("#category").val(cNo).prop("selected",true);    // selectBox 선택값으로 지정
+
+    console.log("board: ", board);
+    console.log("cNo : ",cNo);
+    
+    
+    /*]]>*/
+    
+});	
+/*<![CDATA[*/
+function fn_updateContent() {
+	var session = /*[[${session}]]*/"${session}";
+	const userNo = session.loginUser.userNo; //login정보에서 userNo추출
+
+	console.log("session: ", JSON.stringify(session));
+	console.log("userNo : ", userNo);
+	
+	var board =/*[[${board}]]*/ "board";
+	var boardNo = board.boardNo
+
+	var vo = {
+		cNo : $("#category option:selected").val(),
+		boardTitle : $("#title").val(),
+		boardContent : $("#content").val(),	
+		userNo : userNo,
+		boardNo : boardNo
+	};
+
+	console.log("data :", JSON.stringify(vo));
+
+	$.ajax({
+		url : "/board/updateContent.do",
+		type : "post",
+		contentType : "application/json",
+		data : JSON.stringify(vo),
+		success : function(data) { // 글 수정 성공후 
+			
+			alert(data);
+			location.href = "/board/"+ boardNo;
+
+		},
+		error : function(e) {
+			alert("글등록 실패");
+		}
+	});
+}
+/*]]>*/
+
+</script>
+</head>
+
+<div layout:fragment="content">
+	<div class="hero overlay">
+		<div class="img-bg rellax">
+			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
+		</div>
+		<div class="container">
+			<div class="row align-items-center justify-content-start">
+				<div class="col-lg-5">
+					<h1 class="heading" data-aos="fade-up">게시글 수정</h1>
+					<p class="mb-5" data-aos="fade-up">글 수정 페이지입니다.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-12" data-aos="fade-up" data-aos-delay="0">
+					<h2 class="heading mb-5">글 수정</h2>
+				</div>
+			</div>
+			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+				<div class="row">
+
+					<div class="col-12 mb-3">
+						<select id="category" name="category" class="form-control">
+							<option value="0">-- 분류 --</option>
+							<option th:each="list : ${list}" th:value="${list.cNo}" th:text ="${list.cName}"></option>
+						
+						</select>
+					</div>
+					<div class="col-12 mb-3">
+						<input type="text" class="form-control" placeholder="제목"
+							name="title" id="title" th:value="${board.boardTitle}">
+					</div>
+					<div class="col-12 mb-3">
+						<textarea name="content" id="content" cols="30" rows="7"
+							class="form-control" placeholder="내용을 작성해주세요." th:text="${board.boardContent}"></textarea>
+					</div>
+					<form id="fileUploadForm" enctype="multipart/form-data">
+						<div class="col-12 mb-3">
+
+							<label for="formFile" class="form-label">첨부파일</label> <input
+								class="form-control" type="file" id="uploadFiles"
+								name="uploadFiles" multiple="multiple"> <br> <br>
+						</div>
+					</form>
+					<div class="col-12">
+						<button type="button" onclick="fn_updateContent();"
+							class="btn btn-primary">수정</button>
+						<button type="button" class="btn btn-primary"
+							onclick="history.go(-1)">취소</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- /.untree_co-section -->
+</html>

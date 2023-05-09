@@ -37,26 +37,28 @@
 				success : function(result) { // 글등록 성공후 
 					console.log("result: ", result); //방금 등록한 글의 번호받아서 
 
-					var file = $('#fileUploadForm');
+					var file = $('#uploadFiles');
+					var frm = {
+						uploadFiles : file,
+						boardNo : result
+					};
 					/* if (file) { // 파일이 있다면 				
-						var frm = {
-							uploadFiles : file,
-							boardNo : result
-						};
+
 						$.ajax({
 							url : "/board/upload/fileUpload.do",
 							type : "post",
 							data : frm,
-							success : function(data) {
-								
+							contentType : "application/json",
+							success : function() {
+
 								alert("글이 등록되었습니다.");
 								location.href = "/contents";
 							}
 						});
-					} */
-					alert("글이 등록되었습니다.");
-					location.href = "/contents";
-
+					} else { */
+						alert("글이 등록되었습니다.");
+						location.href = "/contents";
+					//}
 				},
 				error : function(e) {
 					alert("글등록 실패");

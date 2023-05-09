@@ -18,18 +18,16 @@ public interface BoardMapper {
 	
 	int findId();
 
-<<<<<<< HEAD
+
 	
 	//조회수
 	int updateHits(int bno);
 	infoDTO getBoardInfo(int bno);
-=======
-	Board getBoardInfo(int bno);
 
 	List<Category> selectCategory();
 
 	int updateContent(Board board);
 
 	void deleteContent(int boardNo);
->>>>>>> feature/sojin
+
 }

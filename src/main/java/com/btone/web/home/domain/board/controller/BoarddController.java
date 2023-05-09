@@ -17,6 +17,7 @@ import com.btone.web.home.domain.board.service.BoardService;
 import com.btone.web.home.domain.board.vo.BoardVO;
 import com.btone.web.home.domain.board.vo.Category;
 import com.btone.web.home.domain.home.service.HomeService;
+import com.common.Utils;
 
 @Controller
 
@@ -40,11 +41,21 @@ public class BoarddController {
 		
 		List<BoardVO> selectBoard = boardService.selectBoard(cNo);
 		
+		//유저리스트 '만' 뽑고 싶다.
+		List<BoardVO> selectUserList = boardService.selectBoard(cNo);
+		
 		logger.debug("셀렉트 보드 리스트 :  {}", selectBoard);
 		
 		model.addAttribute("list", selectBoard);
 		
 		model.addAttribute("cName", selectBoard.get(cNo).getCName());
+		
+		model.addAttribute("maskName", Utils.NameMasking(selectUserList.get(cNo).getUserName()));
+		
+		
+		//이름만 빼서 새로운 List에 담는 것은 나중에 하도록 하겠습니다.
+		logger.debug("제발 나와라!~~~~~ : {}", selectUserList);
+		
 		
 		List<Category> cateList = homeService.getCate();
 		model.addAttribute("cate", cateList);

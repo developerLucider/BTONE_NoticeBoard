@@ -3,16 +3,11 @@ package com.btone.web.home.domain.board.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.btone.web.home.domain.board.service.CommentService;
-import com.btone.web.home.domain.board.vo.Comment;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.service.BoardService;
+import com.btone.web.home.domain.board.service.CommentService;
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.Category;
+import com.btone.web.home.domain.home.service.HomeService;
 
 @Controller
 @RequestMapping("/board")
@@ -55,6 +52,9 @@ public class BoardController {
 	 * @return int (해당게시글의 번호PK)
 	 * @throws Exception
 	 */
+	@Autowired
+	private HomeService homeService;
+	
 	@ResponseBody
 	@RequestMapping(value="/addContent.do")
 	public int addContent (@RequestBody Board board) throws Exception{
@@ -81,6 +81,9 @@ public class BoardController {
 		boardService.updateHits(bno);
 
 		logger.debug(" {} :", bno);
+		
+		List<Category> cateList = homeService.getCate();
+		model.addAttribute("cate", cateList);
 		
 		return "info";
 	}

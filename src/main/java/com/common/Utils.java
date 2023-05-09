@@ -24,9 +24,9 @@ public class Utils {
 			logger.debug("마스킹 해당 없음");
 			return res;
 		} else if (1 < name.length() && name.length() < 4) {	// 길이가 2, 3인 경우
-			res.replaceAll("(?<=.{1}).", "*");
+			res = res.replaceAll("(?<=.{1}).", "*");
 		} else {	// 그 이상의 길이인 경우
-			res.replaceAll("(?<=.{2}).", "*");
+			res = res.replaceAll("(?<=.{2}).", "*");
 		}
 		
 		logger.info("마스킹 후 이름 = {}", res);		

@@ -20,6 +20,7 @@ public class BoardVO {
 	private String boardContent;
 	private String createDate;
 	private String updateDate;
+	private String boardHits;
 	
 	private String cName;
 	private String userName;

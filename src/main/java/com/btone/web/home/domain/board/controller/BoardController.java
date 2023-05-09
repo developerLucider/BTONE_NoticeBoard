@@ -59,10 +59,7 @@ public class BoardController {
 	@RequestMapping(value="/addContent.do")
 	public int addContent (@RequestBody Board board) throws Exception{
 		logger.debug("addContent 진입");
-		logger.debug("board : {}", board);
-		//textarea에서 enter로 입력된 내용이 select할때는 공백으로 처리되어 나오기 때문에 html태그인 <br>로 바꿔서 DB에 저장.
-		String row = ((String)board.getBoardContent()).replace("\r\n","<br>");
-		board.setBoardContent(row);
+		logger.debug("board : {}", board);		
 		
 		return boardService.addContent(board);
 		
@@ -79,8 +76,13 @@ public class BoardController {
 		
 		logger.debug("내가 클릭한 글 번호 : {}", bno);
 		boardService.updateHits(bno);
+		
+		List<Category> cateList = boardService.categoryList();
+		model.addAttribute("cate", cateList);
 
 		logger.debug(" {} :", bno);
+		logger.debug("info {} :", info);
+		
 		
 		return "info";
 	}
@@ -100,11 +102,14 @@ public class BoardController {
 		
 		infoDTO info = boardService.getBoardInfo(boardNo);   //게시글 정보
 		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
-		model.addAttribute("info", info);
-		model.addAttribute("list", list);		
+
+
+		model.addAttribute("board", info);
+		model.addAttribute("cate", list);		
+
 		
-		logger.debug("info :{}", info);
-		
+		logger.debug("board :{}", info);
+
 		return "updateForm";		
 	}
 	

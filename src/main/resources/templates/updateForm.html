@@ -93,7 +93,7 @@ function fn_updateContent() {
 					<div class="col-12 mb-3">
 						<select id="category" name="category" class="form-control">
 							<option value="0">-- 분류 --</option>
-							<option th:each="list : ${list}" th:value="${list.cNo}" th:text ="${list.cName}"></option>
+							<option th:each="list : ${cate}" th:value="${list.cNo}" th:text ="${list.cName}"></option>
 						
 						</select>
 					</div>

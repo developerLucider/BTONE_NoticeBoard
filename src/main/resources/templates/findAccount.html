@@ -8,39 +8,41 @@
 <title>BTONE_NOTICEBOARD</title>
 
 <script th:inline="javascript">
-function emailCertification() {
+
+// 이메일 인증
+function sendEmailCertification() {
 	var email = $("#mail").val();
    	var emailReg = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
    	
    	var frmData = {
-   			"userName" : name,
    	 	   	"userEmail" : email
-   	} 
+   	}
    	
    	if(!emailReg.test(email)) { // 이메일의 형식이 유효하지않다면
 		   alert("이메일 형식이 유효하지 않습니다.\n" + 
 				 "e-mail은 계정@도메인.최상위도메인의 형식입니다.\n" +
 				 "ex)btone@btone.com");
 	} else {
-		alert("이메일인증 준비중");
-	 	/* $.ajax({
-			url : "/login/find/findId.do",
+	   	$("#certifyNo").show();	// 인증번호 입력 창 보이기
+		
+	 	$.ajax({
+			url : "/certify/Email.do",
 			dataType : "json",
 			type : "post",
 			contentType : "application/json",
 	        data : JSON.stringify(frmData),
 			success : function(data) {
-				if(data.userId) {
-					alert("찾으시는 계정 ID : " + data.userId);
-				} else if(data.userId == ""){
-					alert("찾으시는 계정은 존재하지 않습니다.")
-				}		    	
+				 alert("");
 			},
 			error : function(xhr, status, error) {
-				 alert('아이디 찾기 통신 오류');
+				 alert('이메일 인증 통신 오류');
 			}
-		}); */
+		});
   	}
+}
+
+function checkEmailCertification() {
+	alert("이메일 인증 확인 준비중");
 }
 
 
@@ -55,7 +57,10 @@ function findId() {
 		"userName" : name,
  	   	"userEmail" : email
 	}   	
-   	  			
+
+   	
+   	// TODO:: 인증 true일때, ajax타도록 수정해야함
+   	
 	if(name.length <= 0) {	// 이름이 없는경우
 		alert('이름을 입력해주세요.');
   	} else {
@@ -191,7 +196,17 @@ function findPw() {
 								<br>
 							</div>
 							<div class= "col">
-								<input type="button" value="인증하기" class="btn-secondary" onclick="emailCertification();"/>
+								<input type="button" value="인증번호받기" class="btn-secondary" onclick="sendEmailCertification();"/>
+							</div>
+						</div>
+						<div class="row" id="certifyNo" style="display: none">						
+							<label for="mail">인증번호</label>							
+							<div class="col-4">
+								<input type="text" id="mail" name="mail">
+								<br>
+							</div>
+							<div class= "col">
+								<input type="button" value="인증하기" class="btn-secondary" onclick="checkEmailCertification();"/>
 							</div>
 						</div>
 						<div class="col-12">

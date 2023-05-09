@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.btone.web.home.domain.board.service.CommentService;
+import com.btone.web.home.domain.board.vo.Comment;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+
+	@Autowired
+	private CommentService commentService;
 	
 	
 	/**
@@ -63,11 +68,13 @@ public class BoardController {
 		
 	}
 
-//	글상세보기
+   //글상세보기
 	@GetMapping(value="/{bno}")	
 	public String Showinfo(@PathVariable("bno") int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- info 진입");		
+
 		infoDTO info = boardService.getBoardInfo(bno);
+
 		model.addAttribute("info", info);
 		
 		logger.debug("내가 클릭한 글 번호 : {}", bno);

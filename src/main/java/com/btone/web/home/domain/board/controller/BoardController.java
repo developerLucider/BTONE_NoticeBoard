@@ -91,12 +91,12 @@ public class BoardController {
 		logger.debug("updateForm 진입");
 		logger.debug("boardNo:{}", boardNo);
 		
-		Board board = boardService.getBoardInfo(boardNo);   //게시글 정보
+		infoDTO info = boardService.getBoardInfo(boardNo);   //게시글 정보
 		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
-		model.addAttribute("board", board);
+		model.addAttribute("info", info);
 		model.addAttribute("list", list);		
 		
-		logger.debug("board :{}", board);
+		logger.debug("info :{}", info);
 		
 		return "updateForm";		
 	}

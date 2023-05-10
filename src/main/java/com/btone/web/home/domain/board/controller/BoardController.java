@@ -47,7 +47,8 @@ public class BoardController {
 	@Autowired
 	private CommentService commentService;
 	
-	
+	@Value("${file.upload-location}")
+	String fileConfigPath;
 	/**
 	 * 글 등록
 	 * @author sojin
@@ -56,11 +57,11 @@ public class BoardController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value="/addContent.do")
-	public int addContent (@RequestBody Board board) throws Exception{
+	@PostMapping(value="/addContent.do")
+	public int addContent (Board board) throws Exception{
 		logger.debug("addContent 진입");
-		logger.debug("board : {}", board);		
-		
+		logger.debug("board : {}", board);	
+				
 		return boardService.addContent(board);
 		
 	}
@@ -102,18 +103,12 @@ public class BoardController {
 		
 		infoDTO info = boardService.getBoardInfo(boardNo);   //게시글 정보
 		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
-<<<<<<< Updated upstream
 
-
-		model.addAttribute("board", info);
-		model.addAttribute("cate", list);		
-
-=======
 		model.addAttribute("board", info);
 		model.addAttribute("cate", list);		
 		
 		logger.debug("board :{}", info);
->>>>>>> Stashed changes
+
 		
 		logger.debug("board :{}", info);
 
@@ -157,23 +152,7 @@ public class BoardController {
 	 * @throws IOException
 	 * 파일 업로드
 	 */
-	@Value("${file.upload-location}")
-	String fileConfigPath;
-	
-	@ResponseBody
-	@PostMapping(value="/upload/fileUpload.do")
-	public void fileUpload(@RequestParam(value = "uploadFiles", required = false) List<MultipartFile> files, @RequestParam(value="boardNo") int boardNo, ModelMap model)
-			throws IOException {
 		
-		logger.debug("files : {}", files);		
-		
-		if (files != null) { // 파일이 존재 한다면 
-			for (MultipartFile multipartFile : files) {				
-				 boardService.saveFile(multipartFile, boardNo);			//파일목록을 하나씩 저장.			
-			}
-		}	
-		
-	}
 
 	// 파일의 경로를 찾아서 떨구는 기능
 	@GetMapping(value="/upload/fileDownload.do")

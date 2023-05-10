@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.BoardFile;
 import com.btone.web.home.domain.board.vo.BoardVO;
 import com.btone.web.home.domain.board.vo.Category;
 
@@ -16,10 +17,6 @@ public interface BoardMapper {
 	
 	int addContent(Board board);
 	
-	int findId();
-
-
-	
 	//조회수
 	int updateHits(int bno);
 	infoDTO getBoardInfo(int bno);
@@ -29,5 +26,7 @@ public interface BoardMapper {
 	int updateContent(Board board);
 
 	void deleteContent(int boardNo);
+
+	void addFile(BoardFile boardFile);
 
 }

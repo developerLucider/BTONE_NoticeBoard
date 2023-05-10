@@ -1,6 +1,9 @@
 package com.btone.web.home.domain.board.vo;
 
 import java.time.LocalDate;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -25,5 +28,7 @@ public class Board {
 	private LocalDate updateDate;
 	//조회수
 	private int boardHits;
+	
+	private MultipartFile[] files;
 
 }

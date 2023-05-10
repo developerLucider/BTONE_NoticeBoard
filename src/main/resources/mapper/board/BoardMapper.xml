@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.btone.web.home.domain.board.mapper.BoardMapper">
+<mapper
+	namespace="com.btone.web.home.domain.board.mapper.BoardMapper">
 
 	<insert id="addContent"
-		parameterType="com.btone.web.home.domain.board.vo.Board">
+		parameterType="com.btone.web.home.domain.board.vo.Board" useGeneratedKeys="true" keyProperty="boardNo">
 		insert into board (
 		c_no,user_no,
 		board_title,board_content,
@@ -12,6 +13,15 @@
 		)
 		values(
 		#{cNo},#{userNo},#{boardTitle},#{boardContent},now(),now(),0
+		)
+	</insert>
+
+	<insert id="addFile"
+		parameterType="com.btone.web.home.domain.board.vo.BoardFile">
+		insert into boardfile (
+		file_no, board_no, file_origin_name, file_save_name
+		) values(
+		null, #{boardNo}, #{fileOriginName},#{fileSaveName}
 		)
 	</insert>
 
@@ -40,29 +50,25 @@
 
 	</select>
 
-
-	<select id="findId" resultType="Integer">
-		select max(board_no) from board
-	</select>
-
-
-
-	<select id="getBoardInfo" resultType="com.btone.web.home.domain.board.dto.infoDTO">
-		SELECT  B.BOARD_TITLE , B.BOARD_CONTENT, B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID 
-		FROM  BOARD B 
-			LEFT OUTER JOIN CATEGORY C 
-			ON B.C_NO = C.C_NO 
-			LEFT OUTER JOIN USER U 
-			ON B.USER_NO = U.USER_NO 
+	<select id="getBoardInfo"
+		resultType="com.btone.web.home.domain.board.dto.infoDTO">
+		SELECT b.user_no, b.board_no, B.BOARD_TITLE , B.BOARD_CONTENT,
+		B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID
+		FROM BOARD B
+		LEFT OUTER JOIN CATEGORY C
+		ON B.C_NO = C.C_NO
+		LEFT OUTER JOIN USER U
+		ON B.USER_NO = U.USER_NO
 		WHERE B.BOARD_NO = #{bno}
-		
+
 		<!-- SELECT * FROM BOARD WHERE BOARD_NO = #{bno} -->
 	</select>
-	
+
 	<update id="updateHits" parameterType="int">
-		UPDATE BOARD SET BOARD_HITS = BOARD_HITS + 1 
+		UPDATE BOARD SET
+		BOARD_HITS = BOARD_HITS + 1
 		WHERE BOARD_NO = #{BNO}
-	</update>  
+	</update>
 
 	<select id="selectCategory"
 		resultType="com.btone.web.home.domain.board.vo.Category">
@@ -70,18 +76,18 @@
 	</select>
 	<update id="updateContent"
 		parameterType="com.btone.web.home.domain.board.vo.Board">
-		
-		update board set 
-		c_no = #{cNo}, 
-		board_title=#{boardTitle}, 
+
+		update board set
+		c_no = #{cNo},
+		board_title=#{boardTitle},
 		board_content=#{boardContent},
 		update_date = now()
-		where 
+		where
 		board_no = #{boardNo}
 
 	</update>
 	<delete id="deleteContent" parameterType="int">
-	delete from board where board_no = #{boardNo}
+		delete from board where board_no = #{boardNo}
 	</delete>
 
 </mapper>

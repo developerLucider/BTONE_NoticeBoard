@@ -14,57 +14,50 @@
 		const userNo = session.loginUser.userNo; //login정보에서 userNo추출
 
 		console.log("session: ", JSON.stringify(session));
-		console.log("userNo : ", userNo);
+		console.log("userNo : ", userNo);		
 
-		var vo = {
-			cNo : $("#category option:selected").val(),
-			boardTitle : $("#title").val(),
-			boardContent : $("#content").val(),
-			userNo : userNo
-		};
-
-		console.log("data :", JSON.stringify(vo));
-
-		if (!userNo) {
-			alert("글쓰기 권한이 없습니다.");
-		} else {
-
-			$.ajax({
-				url : "/board/addContent.do",
-				type : "post",
-				contentType : "application/json",
-				data : JSON.stringify(vo),
-				success : function(result) { // 글등록 성공후 
-					console.log("result: ", result); //방금 등록한 글의 번호받아서 
-
-					var file = $('#uploadFiles');
-					var frm = {
-						uploadFiles : file,
-						boardNo : result
-					};
-					/* if (file) { // 파일이 있다면 				
-
-						$.ajax({
-							url : "/board/upload/fileUpload.do",
-							type : "post",
-							data : frm,
-							contentType : "application/json",
-							success : function() {
-
-								alert("글이 등록되었습니다.");
-								location.href = "/contents";
-							}
-						});
-					} else { */
-						alert("글이 등록되었습니다.");
-						location.href = "/contents";
-					//}
-				},
-				error : function(e) {
-					alert("글등록 실패");
+		var vo = new FormData();
+		
+	 	vo.append("cNo", $("#category option:selected").val());
+		vo.append("boardTitle", $("#title").val());
+		vo.append("boardContent", $("#content").val());
+		vo.append("userNo", userNo);
+		
+		//파일 담기
+		var file = $('#uploadFiles');
+		// fileInput 개수를 구한다.
+		for (var i = 0; i < file.length; i++) {
+			if (file[i].files.length > 0) {
+				for (var j = 0; j < file[i].files.length; j++) {
+					console.log(" fileInput[i].files[j] :::"+ file[i].files[j]);					
+					
+					// formData에 'files'이라는 키값으로 file 값을 append 시킨다.  
+					vo.append('files', file[i].files[j]);
 				}
-			});
+			}
 		}
+		
+		console.log("file => " ,file);				
+ 
+		console.log("data :", vo);
+
+		$.ajax({
+			url : "/board/addContent.do",
+			type : "post",
+			processData : false,
+			contentType : false,
+			data : vo,
+			success : function(result) { // 글등록 성공후 
+				console.log("result: ", result); //방금 등록한 글의 번호받아서 
+
+				alert("글이 등록되었습니다.");
+				location.href = "/";
+
+			},
+			error : function(e) {
+				alert("글등록 실패");
+			}
+		});
 	}
 
 	/*]]>*/
@@ -96,39 +89,39 @@
 			</div>
 			<div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
 				<div class="row">
+					<form id="contentForm" enctype="multipart/form-data">
+						<div class="col-12 mb-3">
+							<select id="category" name="category" class="form-control">
+								<option value="0">-- 분류 --</option>
+								<option value="1">유머</option>
+								<option value="2">이직고민</option>
+								<option value="3">취미생활</option>
+								<option value="4">자유게시판</option>
+							</select>
+						</div>
+						<div class="col-12 mb-3">
+							<input type="text" class="form-control" placeholder="제목"
+								name="title" id="title">
+						</div>
+						<div class="col-12 mb-3">
+							<textarea name="content" id="content" cols="30" rows="7"
+								class="form-control" placeholder="내용을 작성해주세요."></textarea>
+						</div>
 
-					<div class="col-12 mb-3">
-						<select id="category" name="category" class="form-control">
-							<option value="0">-- 분류 --</option>
-							<option value="1">유머</option>
-							<option value="2">이직고민</option>
-							<option value="3">취미생활</option>
-							<option value="4">자유게시판</option>
-						</select>
-					</div>
-					<div class="col-12 mb-3">
-						<input type="text" class="form-control" placeholder="제목"
-							name="title" id="title">
-					</div>
-					<div class="col-12 mb-3">
-						<textarea name="content" id="content" cols="30" rows="7"
-							class="form-control" placeholder="내용을 작성해주세요."></textarea>
-					</div>
-					<form id="fileUploadForm" enctype="multipart/form-data">
 						<div class="col-12 mb-3">
 
 							<label for="formFile" class="form-label">첨부파일</label> <input
 								class="form-control" type="file" id="uploadFiles"
 								name="uploadFiles" multiple="multiple"> <br> <br>
 						</div>
-					</form>
-					<div class="col-12">
-						<button type="button" onclick="fn_addContent();"
-							class="btn btn-primary">등록</button>
-						<button type="button" class="btn btn-primary"
-							onclick="location.href='contents.html'">취소</button>
-					</div>
 
+						<div class="col-12">
+							<button type="button" onclick="fn_addContent();"
+								class="btn btn-primary">등록</button>
+							<button type="button" class="btn btn-primary"
+								onclick="location.href='contents.html'">취소</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

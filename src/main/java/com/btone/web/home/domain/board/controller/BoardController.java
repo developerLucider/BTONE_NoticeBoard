@@ -44,7 +44,8 @@ public class BoardController {
 	@Autowired
 	private CommentService commentService;
 	
-	
+	@Value("${file.upload-location}")
+	String fileConfigPath;
 	/**
 	 * 글 등록
 	 * @author sojin
@@ -56,14 +57,11 @@ public class BoardController {
 	private HomeService homeService;
 	
 	@ResponseBody
-	@RequestMapping(value="/addContent.do")
-	public int addContent (@RequestBody Board board) throws Exception{
+	@PostMapping(value="/addContent.do")
+	public int addContent (Board board) throws Exception{
 		logger.debug("addContent 진입");
-		logger.debug("board : {}", board);
-		//textarea에서 enter로 입력된 내용이 select할때는 공백으로 처리되어 나오기 때문에 html태그인 <br>로 바꿔서 DB에 저장.
-		String row = ((String)board.getBoardContent()).replace("\r\n","<br>");
-		board.setBoardContent(row);
-		
+		logger.debug("board : {}", board);	
+				
 		return boardService.addContent(board);
 		
 	}
@@ -79,8 +77,13 @@ public class BoardController {
 		
 		logger.debug("내가 클릭한 글 번호 : {}", bno);
 		boardService.updateHits(bno);
+		
+		List<Category> cateList = boardService.categoryList();
+		model.addAttribute("cate", cateList);
 
 		logger.debug(" {} :", bno);
+		logger.debug("info {} :", info);
+		
 		
 		List<Category> cateList = homeService.getCate();
 		model.addAttribute("cate", cateList);
@@ -103,11 +106,15 @@ public class BoardController {
 		
 		infoDTO info = boardService.getBoardInfo(boardNo);   //게시글 정보
 		List<Category> list = boardService.categoryList();   //전체 카테고리 리스트 
-		model.addAttribute("info", info);
-		model.addAttribute("list", list);		
+
+		model.addAttribute("board", info);
+		model.addAttribute("cate", list);		
 		
-		logger.debug("info :{}", info);
+		logger.debug("board :{}", info);
+
 		
+		logger.debug("board :{}", info);
+
 		return "updateForm";		
 	}
 	
@@ -148,23 +155,7 @@ public class BoardController {
 	 * @throws IOException
 	 * 파일 업로드
 	 */
-	@Value("${file.upload-location}")
-	String fileConfigPath;
-	
-	@ResponseBody
-	@PostMapping(value="/upload/fileUpload.do")
-	public void fileUpload(@RequestParam(value = "uploadFiles", required = false) List<MultipartFile> files, @RequestParam(value="boardNo") int boardNo, ModelMap model)
-			throws IOException {
 		
-		logger.debug("files : {}", files);		
-		
-		if (files != null) { // 파일이 존재 한다면 
-			for (MultipartFile multipartFile : files) {				
-				 boardService.saveFile(multipartFile, boardNo);			//파일목록을 하나씩 저장.			
-			}
-		}	
-		
-	}
 
 	// 파일의 경로를 찾아서 떨구는 기능
 	@GetMapping(value="/upload/fileDownload.do")

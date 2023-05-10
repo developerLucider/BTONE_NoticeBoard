@@ -77,9 +77,7 @@ public class BoardController {
 		
 		logger.debug("내가 클릭한 글 번호 : {}", bno);
 		boardService.updateHits(bno);
-		
-		List<Category> cateList = boardService.categoryList();
-		model.addAttribute("cate", cateList);
+
 
 		logger.debug(" {} :", bno);
 		logger.debug("info {} :", info);

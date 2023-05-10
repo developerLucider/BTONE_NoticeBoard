@@ -48,23 +48,25 @@
 		on b.USER_NO = u.USER_NO
 		where b.C_NO = #{cNo}
 		order by b.create_date desc;
-		
-
 	</select>
 
-	<select id="getBoardInfo"
-		resultType="com.btone.web.home.domain.board.dto.infoDTO">
-		SELECT b.user_no, b.board_no, B.BOARD_TITLE , B.BOARD_CONTENT,
-		B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID
-		FROM BOARD B
-		LEFT OUTER JOIN CATEGORY C
-		ON B.C_NO = C.C_NO
-		LEFT OUTER JOIN USER U
-		ON B.USER_NO = U.USER_NO
-		WHERE B.BOARD_NO = #{bno}
 
-		<!-- SELECT * FROM BOARD WHERE BOARD_NO = #{bno} -->
+	<select id="findId" resultType="Integer">
+		select max(board_no) from board
 	</select>
+
+
+
+	<select id="getBoardInfo" resultType="com.btone.web.home.domain.board.dto.infoDTO">
+		SELECT B.BOARD_NO, B.BOARD_TITLE , B.BOARD_CONTENT, B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID
+		FROM  BOARD B 
+			LEFT OUTER JOIN CATEGORY C 
+			ON B.C_NO = C.C_NO 
+			LEFT OUTER JOIN USER U 
+			ON B.USER_NO = U.USER_NO 
+			WHERE B.BOARD_NO = #{bno}
+	</select>
+
 
 	<update id="updateHits" parameterType="int">
 		UPDATE BOARD SET

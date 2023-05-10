@@ -13,6 +13,7 @@ public class Comment {
 
     private Long commentNo; // 댓글 번호(시퀀스)
     private int boardNo; // 게시길 번호
+    private String userId; // 유저 아이디
     private String commentContent; // 댓글 내용
     private Long parentNo; // 대댓글을 위한 기존 댓글 번호
     private LocalDateTime createDate; // 댓글 작성일

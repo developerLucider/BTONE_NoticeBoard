@@ -7,7 +7,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.btone.web.home.domain.board.service.CommentService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.service.BoardService;
-import com.btone.web.home.domain.board.service.CommentService;
 import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.Category;
 import com.btone.web.home.domain.home.service.HomeService;
@@ -68,13 +67,13 @@ public class BoardController {
 
    //글상세보기
 	@GetMapping(value="/{bno}")	
-	public String Showinfo(@PathVariable("bno") int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	public String Showinfo(@PathVariable int bno, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		logger.debug("------------------- info 진입");		
 
 		infoDTO info = boardService.getBoardInfo(bno);
 
 		model.addAttribute("info", info);
-		
+
 		logger.debug("내가 클릭한 글 번호 : {}", bno);
 		boardService.updateHits(bno);
 

@@ -2,20 +2,17 @@ package com.btone.web.home.domain.board.controller;
 
 
 import com.btone.web.home.domain.board.service.CommentService;
-import com.btone.web.home.domain.board.vo.Board;
 import com.btone.web.home.domain.board.vo.Comment;
-import javassist.NotFoundException;
+import com.btone.web.home.domain.login.service.LoginService;
+import com.btone.web.home.domain.login.vo.UserLoginVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/comments")
@@ -23,10 +20,11 @@ import java.util.Optional;
 public class CommentController {
 
     private CommentService commentService;
+    private LoginService loginService;
 
-    @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, LoginService loginService) {
         this.commentService = commentService;
+        this.loginService = loginService;
     }
 
 
@@ -36,10 +34,21 @@ public class CommentController {
      */
     @PostMapping("/{boardNo}")
     @ResponseBody
-    public int insertComments(@RequestBody Comment comment){
+    public int insertComments(@PathVariable int boardNo, @RequestBody Comment comment,HttpServletRequest request){
         log.info("comments reply controller");
-         int result = commentService.insertComment(comment);
-         return result;
+
+        HttpSession httpSession = request.getSession();
+
+        UserLoginVO loginUser = (UserLoginVO) httpSession.getAttribute("loginUser");
+
+       comment.setUserId(loginUser.getUserId());
+       comment.setBoardNo(boardNo);
+       int result = commentService.insertComment(comment);
+
+        // 데이터 확인을 위한 로그 출력
+        log.debug("댓글 저장 결과: {}", result);
+           
+       return result;
     }
 
     /**
@@ -48,8 +57,16 @@ public class CommentController {
      */
     @PostMapping("/{boardNo}/{commentNo}")
     @ResponseBody
-    public int insertReComments(@RequestBody Comment comment){
+    public int insertReComments(@PathVariable int boardNo, @PathVariable Long commentNo, @RequestBody Comment comment, HttpServletRequest request){
         log.info("reComments controller");
+
+        HttpSession httpSession = request.getSession();
+
+        UserLoginVO loginUser = (UserLoginVO) httpSession.getAttribute("loginUser");
+
+        comment.setUserId(loginUser.getUserId());
+        comment.setBoardNo(boardNo);
+        comment.setParentNo(commentNo);
 
         int result =  commentService.insertReComment(comment);
 
@@ -74,11 +91,17 @@ public class CommentController {
      */
     @GetMapping("/{boardNo}")
     @ResponseBody
-    public List<Comment> getCommentList(@PathVariable int boardNo){
+    public List<Comment> getCommentList(@PathVariable int boardNo , HttpServletRequest request){
         log.info("---getCommentList controller---");
+
+        HttpSession httpSession = request.getSession();
+
+        UserLoginVO userLoginVO = (UserLoginVO) httpSession.getAttribute("loginUser");
+        httpSession.setAttribute("loginUser", userLoginVO);
 
         // 댓글 리스트
         List<Comment> comments = commentService.findBoardNoByComments(boardNo);
+
         return comments;
     }
 

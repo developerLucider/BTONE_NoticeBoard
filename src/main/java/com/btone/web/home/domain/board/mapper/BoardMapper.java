@@ -18,8 +18,6 @@ public interface BoardMapper {
 	
 	int findId();
 
-
-	
 	//조회수
 	int updateHits(int bno);
 	infoDTO getBoardInfo(int bno);

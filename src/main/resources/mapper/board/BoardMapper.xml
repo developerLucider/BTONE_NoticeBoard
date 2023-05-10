@@ -48,7 +48,7 @@
 
 
 	<select id="getBoardInfo" resultType="com.btone.web.home.domain.board.dto.infoDTO">
-		SELECT  B.BOARD_TITLE , B.BOARD_CONTENT, B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID 
+		SELECT B.BOARD_NO, B.BOARD_TITLE , B.BOARD_CONTENT, B.CREATE_DATE, B.BOARD_HITS, C.C_NAME , U.USER_ID
 		FROM  BOARD B 
 			LEFT OUTER JOIN CATEGORY C 
 			ON B.C_NO = C.C_NO 

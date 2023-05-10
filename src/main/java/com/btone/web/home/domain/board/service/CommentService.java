@@ -66,13 +66,13 @@ public class CommentService {
     public int insertReComment(Comment comment) {
         log.info("------- reComment service -----------");
 
-        Comment reCommentSave = new Comment();
-        reCommentSave.setBoardNo(comment.getBoardNo());
-        reCommentSave.setCommentContent(comment.getCommentContent());
-        reCommentSave.setParentNo(comment.getParentNo());
-        reCommentSave.setCreateDate(LocalDateTime.now());
+//        Comment reCommentSave = new Comment();
+//        reCommentSave.setBoardNo(comment.getBoardNo());
+//        reCommentSave.setCommentContent(comment.getCommentContent());
+//        reCommentSave.setParentNo(comment.getParentNo());
+//        reCommentSave.setCreateDate(LocalDateTime.now());
 
-        int result = commentMapper.insertReplyComment(reCommentSave);
+        int result = commentMapper.insertReplyComment(comment);
 
         return result;
     }
@@ -91,7 +91,6 @@ public class CommentService {
 
     /**
      * 댓글 삭제
-     *
      * @param commentNo
      * @author 박상훈
      */

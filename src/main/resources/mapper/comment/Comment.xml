@@ -14,11 +14,13 @@
 	<insert id="insertComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="Comment">
 		INSERT INTO comment(
 								board_no,
+		                    	user_id,
 								comment_content,
 								create_date
 							)
 					VALUES (
 							   #{boardNo},
+					           #{userId},
 							   #{commentContent},
 							   NOW()
 						   )
@@ -28,12 +30,14 @@
 	<insert id="insertReplyComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="Comment">
 		INSERT INTO comment(
 		                    	board_no,
+		                    	user_id,
 								parent_no,
 								comment_content,
 								create_date
 							)
 				VALUES 		(
 				          		#{boardNo},
+				          		#{userId},
 				          		#{parentNo},
 				          		#{commentContent},
 				          		NOW()
@@ -94,7 +98,7 @@
 	<select id="readCommentsByBoardNo" resultType="Comment" parameterType="Integer">
 		WITH RECURSIVE comment_hierarchy AS (
 			SELECT
-				comment_no, board_no, parent_no, comment_content, create_date, is_deleted, 1 as depth,
+				comment_no, user_id, board_no, parent_no, comment_content, create_date, is_deleted, 1 as depth,
 				CAST(comment_no AS CHAR(200)) as path, create_date as sort_date
 			FROM
 				comment
@@ -103,7 +107,7 @@
 			AND board_no = #{boardNo}
 			UNION ALL
 			SELECT
-				c.comment_no, c.board_no, c.parent_no, c.comment_content, c.create_date, c.is_deleted,
+				c.comment_no, c.user_id, c.board_no, c.parent_no, c.comment_content, c.create_date, c.is_deleted,
 				ch.depth + 1,
 				CONCAT_WS('-', ch.path, c.comment_no),
 				CASE WHEN ch.parent_no IS NULL THEN c.create_date
@@ -116,7 +120,7 @@
 				c.parent_no IS NOT NULL
 		)
 		SELECT
-			comment_no, board_no, parent_no, comment_content, create_date, is_deleted, depth
+			comment_no, user_id, board_no, parent_no, comment_content, create_date, is_deleted, depth
 		FROM
 			comment_hierarchy
 		ORDER BY

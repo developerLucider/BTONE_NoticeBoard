@@ -47,6 +47,8 @@
 		join user u
 		on b.USER_NO = u.USER_NO
 		where b.C_NO = #{cNo}
+		order by b.create_date desc;
+		
 
 	</select>
 

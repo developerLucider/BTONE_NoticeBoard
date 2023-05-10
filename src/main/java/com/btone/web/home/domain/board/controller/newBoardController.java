@@ -21,9 +21,9 @@ import com.common.Utils;
 
 @Controller
 
-public class BoarddController {
+public class newBoardController {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoarddController.class);
+	private static final Logger logger = LoggerFactory.getLogger(newBoardController.class);
 	
 	@Autowired
 	private BoardService boardService;
@@ -31,7 +31,8 @@ public class BoarddController {
 	@Autowired
 	private HomeService homeService;	
 	
-	
+	private BoardVO boardVO;
+
 	@GetMapping("/boardCate/{cNo}")
 	public String selectBoard(ModelMap model, @PathVariable int cNo, HttpServletRequest request, HttpServletResponse response)throws Exception{
 		//
@@ -41,20 +42,21 @@ public class BoarddController {
 		
 		List<BoardVO> selectBoard = boardService.selectBoard(cNo);
 		
-		//유저리스트 '만' 뽑고 싶다.
-		List<BoardVO> selectUserList = boardService.selectBoard(cNo);
-		
 		logger.debug("셀렉트 보드 리스트 :  {}", selectBoard);
 		
-		model.addAttribute("list", selectBoard);
-		
+		//카테고리 이름
 		model.addAttribute("cName", selectBoard.get(cNo).getCName());
 		
-		model.addAttribute("maskName", Utils.NameMasking(selectUserList.get(cNo).getUserName()));
+		//이름만 뽑아서 마스킹으로 처리함
+		for(BoardVO userBoardList : selectBoard) {
+			String onlyName = Utils.NameMasking(userBoardList.getUserName());
+			userBoardList.setMaskingName(onlyName);
+			logger.debug("onlyname : {}", onlyName);
+			
+		}
 		
-		
-		//이름만 빼서 새로운 List에 담는 것은 나중에 하도록 하겠습니다.
-		logger.debug("제발 나와라!~~~~~ : {}", selectUserList);
+		//리스트 출력
+		model.addAttribute("list", selectBoard);
 		
 		
 		List<Category> cateList = homeService.getCate();

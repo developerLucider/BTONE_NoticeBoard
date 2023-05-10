@@ -89,17 +89,15 @@ body td {
 					<div >
 						
 					</div>
-					<h1 id="first_th"><a th:text="${cName} + '게시판'"></a></h1>
+					<h1 id="first_th"><a th:text="${cName} + '게시판'" ></a></h1>
 					<table id="table" th:each="list : ${list}">
-					
 						<tr>
 							<th><a class="date" th:text="${list.createDate}"></a></th>
 						</tr>
 						<tr>
-							<th><a th:text="'작성자 : ' + ${maskName}" ></a></th>
+							<th><a th:text="'작성자 : ' + ${list.maskingName}" ></a></th>
 						</tr>
 						<tr>
-							<!-- <th id="th" th:text="'제목 : ' + ${list.boardTitle}"></th> -->
 							<th>
 							<a th:href="@{/board/{bno}(bno=${list.boardNo})}"><h2 th:text="${list.boardTitle}"></h2></a>
 							</th>
@@ -115,11 +113,6 @@ body td {
 					</table>
 						<br><br>				
 				</div>
-				<center>
-				<p id="loding">
-				<img src="/images/loading.gif">
-				</p>
-				</center>
 			</div>
 		</div>
 	</div>

@@ -1,8 +1,6 @@
-package com.btone.web.home.domain.board.vo;
+package com.btone.web.home.domain.board.dto;
 
 import java.time.LocalDate;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,21 +12,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Getter
 @Setter
-public class Board {
-
+@Getter
+public class infoDTO {
 	private int boardNo;
 	@JsonProperty("cNo")
 	private int cNo;
+	private String cName;
 	private int userNo;
+	private String userId;
 	private  String boardTitle;
 	private String boardContent;
 	private LocalDate createDate;
 	private LocalDate updateDate;
-	//조회수
 	private int boardHits;
 	
-	private MultipartFile[] files;
-
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.btone.web.home.domain.board.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -20,9 +22,11 @@ public class BoardVO {
 	private String boardContent;
 	private String createDate;
 	private String updateDate;
+	private String boardHits;
 	
 	private String cName;
 	private String userName;
+	private String maskingName;
 	
 
 }

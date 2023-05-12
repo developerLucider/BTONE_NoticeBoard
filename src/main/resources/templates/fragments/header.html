@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
+
 <div th:fragment="headerFragment">
 	<div class="site-mobile-menu site-navbar-target">
 		<div class="site-mobile-menu-header">
@@ -31,7 +28,7 @@
 							<li class="has-children">
 								<a>카테고리</a>
 								<ul class="dropdown">
-									<li  th:each="cate : ${cate}"><a th:href="@{/boardCate/{cNo}(cNo=${cate.cNo})}" th:text="${cate.cNo} + '. ' + ${cate.cName}"></a></li>     
+									<li th:each="cate : ${cate}"><a th:href="@{/boardCate/{cNo}(cNo=${cate.cNo})}" th:text="${cate.cNo} + '. ' + ${cate.cName}"></a></li>     
 								</ul>
 							</li>						
 						</ul>

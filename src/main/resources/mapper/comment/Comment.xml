@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.btone.web.home.domain.board.mapper.CommentMapper">
+
+	<!-- 게시판 조회 -->
+	<select id="findByBoardNo" resultType="Board" parameterType="Integer">
+		SELECT *
+		FROM board
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+	<!-- 댓글 저장 -->
+	<insert id="insertComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="Comment">
+		INSERT INTO comment(
+								board_no,
+		                    	user_id,
+								comment_content,
+								create_date
+							)
+					VALUES (
+							   #{boardNo},
+					           #{userId},
+							   #{commentContent},
+							   NOW()
+						   )
+	</insert>
+
+	<!-- 대댓글 저장 -->
+	<insert id="insertReplyComment" useGeneratedKeys="true" keyProperty="commentNo" parameterType="Comment">
+		INSERT INTO comment(
+		                    	board_no,
+		                    	user_id,
+								parent_no,
+								comment_content,
+								create_date
+							)
+				VALUES 		(
+				          		#{boardNo},
+				          		#{userId},
+				          		#{parentNo},
+				          		#{commentContent},
+				          		NOW()
+							  )
+	</insert>
+
+	<!-- 댓글 개수 조회 -->
+	<select id="getCommentCountByBoardNo" resultType="Integer">
+		SELECT count(*)
+		FROM   comment
+		WHERE  board_no = #{boardNo}
+	</select>
+
+	<!-- 대댓글 개수 조회 -->
+	<select id="readCommentCountByParentCommentNo" resultType="Integer">
+		SELECT count(*)
+		FROM   comment
+		WHERE  parent_no = #{parentNo}
+	</select>
+
+	<!-- 댓글 조회 -->
+	<select id="getCommentByNo" parameterType="java.lang.Long" resultType="Comment">
+		SELECT *
+		FROM comment
+		WHERE comment_no = #{commentNo}
+	</select>
+
+	<!-- 대댓글 조회 -->
+	<select id="getRepliesByParentNo" parameterType="java.lang.Long" resultType="Comment">
+		SELECT *
+		FROM comment
+		WHERE parent_no = #{parentNo}
+	</select>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="java.lang.Long">
+		DELETE FROM comment
+		WHERE comment_no = #{commentNo}
+	</delete>
+
+	<!-- 부모 댓글 논리적으로 삭제 -->
+	<update id="updateCommentDeleted" parameterType="java.util.Map">
+		UPDATE comment
+		SET is_deleted = #{isDeleted}
+		WHERE comment_no = #{commentNo}
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="Comment">
+		UPDATE comment
+		SET	   comment_content = #{commentContent},
+		       modify_date = NOW()
+		WHERE  comment_no = #{commentNo}
+	</update>
+
+
+	<!-- 게시판별 댓글 및 대댓글 전체 조회 -->
+	<select id="readCommentsByBoardNo" resultType="Comment" parameterType="Integer">
+		WITH RECURSIVE comment_hierarchy AS (
+			SELECT
+				comment_no, user_id, board_no, parent_no, comment_content, create_date, is_deleted, 1 as depth,
+				CAST(comment_no AS CHAR(200)) as path, create_date as sort_date
+			FROM
+				comment
+			WHERE
+				parent_no IS NULL
+			AND board_no = #{boardNo}
+			UNION ALL
+			SELECT
+				c.comment_no, c.user_id, c.board_no, c.parent_no, c.comment_content, c.create_date, c.is_deleted,
+				ch.depth + 1,
+				CONCAT_WS('-', ch.path, c.comment_no),
+				CASE WHEN ch.parent_no IS NULL THEN c.create_date
+					 ELSE CASE WHEN c.create_date > ch.create_date THEN c.create_date ELSE ch.create_date END
+					END as sort_date
+			FROM
+				comment c
+					INNER JOIN comment_hierarchy ch ON ch.comment_no = c.parent_no
+			WHERE
+				c.parent_no IS NOT NULL
+		)
+		SELECT
+			comment_no, user_id, board_no, parent_no, comment_content, create_date, is_deleted, depth
+		FROM
+			comment_hierarchy
+		ORDER BY
+			path ASC, sort_date DESC;
+	</select>
+
+</mapper>

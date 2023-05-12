@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.BoardFile;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
 
 @Mapper
 public interface BoardMapper {
@@ -14,5 +17,18 @@ public interface BoardMapper {
 	
 	int addContent(Board board);
 
-	Board getBoardInfo(int bno);
+	int findId();
+
+	//조회수
+	int updateHits(int bno);
+	infoDTO getBoardInfo(int bno);
+
+	List<Category> selectCategory();
+
+	int updateContent(Board board);
+
+	void deleteContent(int boardNo);
+
+	void addFile(BoardFile boardFile);
+
 }

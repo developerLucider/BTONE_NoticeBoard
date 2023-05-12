@@ -6,11 +6,101 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BTONE_NOTICEBOARD</title>
-<style>
-</style>
+	<link rel= "stylesheet" type="text/css" th:href="@{/css/comment.css}"/>
 <script th:inline="javascript">
-	
+
+
+	$(document).ready(function() {
+		/*<![CDATA[*/
+
+		var session = /*[[${session}]]*/"${session}";
+
+		// 댓글 등록 폼 이벤트
+		document.getElementById('commentContent').addEventListener('input', function () {
+			 if (Object.keys(session).length === 0 ) {
+			alert('로그인이 필요합니다.');
+			 }
+		});
+
+		// let userSession = /*[[${session}]]*/"${loginUser}";
+		const userNo = session.loginUser.userNo; //login정보에서 userNo추출
+
+		// const userNo = session ? session.loginUser : null; //login정보에서 userNo추출
+
+		console.log("session: ", JSON.stringify(session));
+		console.log("loginUser : ", session.loginUser);
+		// console.log("userNo : " , userNo);
+
+
+		var board = /*[[${info}]]*/"board"; // model에 담겨온 게시글 정보
+		var b_userNo = board.userNo;
+		console.log("board: ", JSON.stringify(board));
+		console.log("b_userNo : ", b_userNo);
+
+		if (!session.loginUser || userNo !== b_userNo) {
+			$(".user").hide();
+		}
+
+
+		/*]]>*/
+	});
+
+	/*<![CDATA[*/
+	function fn_deleteContent() {
+		var board = /*[[${info}]]*/"board";
+		var boardNo = {boardNo:board.boardNo};
+		
+		console.log("boardNo: ", boardNo);
+		
+		var check = confirm("정말 삭제 하시겠습니까?");
+		if(check === true){
+
+			$.ajax({
+				url : "/board/deleteContent.do",
+				type : "get",
+				data : boardNo,
+				success : function() { 
+					alert("삭제 되었습니다.");
+					location.href = "/";
+				},
+				error : function(e) {
+					alert("삭제 할 수 없습니다.");
+				}
+			});
+		}
+	}
+
+
+	/*]]>*/
 </script>
+<style type="text/css">
+#th{
+	font: 20px bold;
+}
+#table{
+	width: 100%;
+	margin-bottom: 30px;
+	min-height: 400px;
+}
+th{
+	height: 40px;
+}
+
+#th, #td {
+    border: 1px solid #444444;
+    padding: 10px;
+    width: 100%;
+    
+  }
+#first_th{
+	font: 30px bold;
+	margin-bottom: 60px;
+}
+</style>
+
+</script>
+
+
 </head>
 
 <div layout:fragment="content">
@@ -32,34 +122,433 @@
 		<div class="container">
 			<div class="row align-items-stretch">
 				<div class="col-12 mb-3">
-					<table>
+					<h1 id="first_th"><a th:text="${info.cName}"></a>게시판</h1>
+					<table id="table">
+					
 						<tr>
-							<th th:text="${info.boardTitle}"></th>
+							<th><a class="date" th:text="${info.createDate}"></a></th>
 						</tr>
 						<tr>
-							<td th:text="${info.boardContent}"></td>
+							<th>작성자 : <a th:text="${info.userId}" ></a></th>
 						</tr>
+						<tr>
+							<th id="th" th:text="${info.boardTitle}"></th>
+						</tr>
+						<tr>
+							<td id="td" th:text="${info.boardContent}"></td>
+						</tr>
+							<th>조회수 : <a class="date" th:text="${info.boardHits}" ></a></th>
 					</table>
-					<!-- onclick으로 댓글 리스트 보이게 작성 -->
-					<button type="button" class="btn btn-primary" onclick="">댓글보기▼</button>
-					<div>
-						<!-- 댓글리스트 공간 -->
+
+                    <a href="javascript:history.back();"><button>뒤로가기</button></a>
+					<a th:href="@{/board/update/{boardNo}(boardNo=${info.boardNo})}"><button
+							th:if="${session.loginUser != null}" type="button" class="user">수정</button></a>
+					<button th:if="${session.loginUser != null}" type="button" onclick="fn_deleteContent();" class="user">삭제</button>
+
+
+					<a th:href="@{/board/update/{boardNo}(boardNo=${info.boardNo})}">
+						<button th:if="${session.loginUser != null}" type="button" class="user">수정</button></a>
+						<button th:if="${session.loginUser != null}" type="button" onclick="fn_deleteContent();" class="user">삭제</button>
+
+
+					<br><br><br>
+
+					<!-- 댓글 입력 창 -->
+					<div class="cm_write">
+						<fieldset>
+							<div class="cm_input">
+								<!-- 잠시 주석 onkeyup="countingLength(this);"-->
+								<textarea id="commentContent" name="commentContent" cols="200" rows="4" placeholder="댓글을 입력해 주세요."></textarea>
+								<span>
+									<button type="button" class="btns" onclick="comment_add()">등록</button>
+								</span>
+							</div>
+						</fieldset>
 					</div>
-					<br>
-					<div>
-						<span></span>
-						<!-- 로그인된 아이디 출력되게 -->
-						<textarea name="reply" id="reply" cols="30" rows="2"
-							class="form-control"></textarea>
-						<button type="button" onclick="">등록</button>
+
+					<br><br><br>
+
+					<div class="comment_header">
+						<p class="comment_title">댓글</p>
+						<div id="comment_count"></div>
 					</div>
+					<!-- 댓글리스트 공간 -->
+					<div class="comment_list">
+						<!-- 삭제된 댓글인 경우 -->
+						<div id="deletedComment" class="comment deleted-comment" style="display: none;">
+							<p class="message">삭제된 댓글입니다.</p>
+						</div>
+					</div>
+
 				</div>
-
-
 			</div>
 		</div>
 	</div>
+<script>
+	window.onload = () => {
+		comments();
+		getCommentCount();
+	}
+
+	function reloadPage(){
+		window.location.reload(); // 페이지 새로고침
+	}
+
+	// 댓글 개수 조회
+	function getCommentCount(){
+		const boardNo = [[ ${info.boardNo} ]]; // 게시판 번호
+		$.ajax({
+			url : '/comments/count/' + boardNo,
+			type : 'GET',
+			success : function (response){
+				document.getElementById('comment_count').innerText =  response;
+			},
+			error : function (request, status, error){
+				console.log(error);
+			}
+		});
+	}
+
+	// 게시글의 전체 댓글 조회
+	function comments() {
+
+		// var session = /*[[${session}]]*/"${loginUser}";
+		const boardNo = [[ ${info.boardNo} ]]; // 게시판 번호
+
+		$.ajax({
+			url : '/comments/' + boardNo,
+			type : 'GET',
+			dataTypes : 'json',
+			async : false,
+			success : function (response){
+				// 1. 조회된 데이터가 없는 경우
+				if(!response.length){
+					document.querySelector('.comment_list').innerHTML = '<div class="comment_none"><p>등록된 댓글이 없습니다.</p>';
+					return false;
+				}
+				// 2. 랜더링 할 HTML을 저장할 변수
+				let commentHtml = '';
+
+				// 3. 댓글 HTML 추가
+				response.forEach(row => {
+					console.log("대댓글 사용자 이름: " + row.userId);
+					 if (row.parentNo) { // 대댓글인 경우
+							commentHtml += `
+									<div class="child-comment">
+										  <p class="writer">
+											<em>${row.userId}</em>
+										  </p>
+										  <div class="cont">
+											<div class="txt_con">${row.commentContent}</div>
+										  </div>
+										  <!-- 등록 및 수정 날짜-->
+										  <div class="comment-time">
+											${row.createDate}
+										  </div>
+											  <p class="func_btns">
+												<!--<button  type="button"  class="btns" onclick="editComment(${row.commentNo})">
+												  <span class="icons icon-modify">수정</span>
+												</button>
+												-->
+													<button type="button" class="btns" onclick="deleteReply(${row.commentNo})">
+													  <span class="icons icon-del">삭제</span>
+													</button>
+											  </p>
 
 
+										  <!-- 수정 폼 -->
+										 <!-- <div id="editForm-${row.commentNo}" style="display: none;">
+											<textarea id="editContent-${row.commentNo}" rows="4" cols="50">${row.commentContent}</textarea>
+											<button type="button" onclick="closeEditForm(${row.commentNo})">닫기</button>
+											<button type="button" onclick="updateComment(${row.commentNo})">등록</button>
+										  </div>-->
+									  </div>
+									</div>
+         						 `;
+					} else { // 부모 댓글 일 경우
+						 if(row.isDeleted === 'Y'){
+							 commentHtml += `
+							 	<div class="comment parent-comment">
+							 	 	<p class="deleted-message">삭제된 댓글입니다.</p>
+							 	</div>
+							 `;
+						 } else {
+							 commentHtml += `
+										<div class="comment parent-comment">
+											<p class="writer">
+												<em>${row.userId}</em>
+											</p>
+											<div class="cont">
+												<div class="txt_con">${row.commentContent}</div>
+											</div>
+
+											<div class="comment-time">
+												${row.createDate}
+											</div>
+											<p class="func_btns">
+
+													<!--<button type="button" class="btns" onclick="editComment(${row.commentNo})">
+														<span class="icons icon-modify">수정</span></button>
+														-->
+													<button type="button" class="btns">
+														<span class="icons icon-del" onclick="deleteComment(${row.commentNo})">삭제</span>
+													</button>
+
+												<button type="button" class="btns" onclick="showReplyForm(${row.commentNo})">
+													<span>답글</span>
+												</button>
+											</p>
+											 <!-- 답글 폼 -->
+											<div id="replyForm-${row.commentNo}" style="display: none;">
+												<textarea id="replyContent-${row.commentNo}" rows="4" cols="50" placeholder="답글을 입력해 주세요."></textarea>
+												<button type="button" onclick="submitReply(${row.commentNo})">등록</button>
+											</div>
+
+											<!-- 수정 폼 -->
+											<!--<div id="editForm-${row.commentNo}" style="display: none;">
+												<textarea id="editContent-${row.commentNo}" rows="4" cols="50">${row.commentContent}</textarea>
+												<button type="button" onclick="closeEditForm(${row.commentNo})">닫기</button>
+												<button type="button" onclick="updateComment(${row.commentNo})">등록</button>
+											</div>		-->
+										</div>
+								`;
+						    }
+						}
+					// 4. class가 "comment_list" 인 요소를 찾아서 HTML 랜더링
+					document.querySelector('.comment_list').innerHTML = commentHtml;
+				});
+			},
+			error : function(request, status, error){
+				console.log(error);
+			}
+		});
+	}
+
+
+	// 답글 버튼 클릭 시 폼을 보여준다.
+	function showReplyForm(commentNo) {
+
+			const replyForm = document.getElementById(`replyForm-${commentNo}`);
+			if (replyForm) {
+				if (replyForm.style.display === 'block') {
+					replyForm.style.display = 'none';
+				} else {
+					replyForm.style.display = 'block';
+
+					// 등록 버튼 텍스트 변경
+					const submitButton = replyForm.querySelector('button[type="button"]');
+					if (submitButton) {
+						submitButton.innerText = '등록';
+					}
+
+				}
+			} else {
+				console.error(`Parent comment with ID 'comment-${commentNo}' not found.`);
+			}
+
+	}
+
+	// // 댓글 수정 창 열기
+	// function editComment(commentNo){
+	// 	const editForm = document.getElementById(`editForm-${commentNo}`);
+	// 	editForm.style.display = 'block';
+	// }
+	//
+	// // 수정 창 닫기
+	// function closeEditForm(commentNo){
+	// 	const editForm = document.getElementById(`editForm-${commentNo}`);
+	// 	editForm.style.display = 'none';
+	// }
+
+
+	// 댓글 수정
+	function updateComment(commentNo){
+		const editContent = document.getElementById(`editContent-${commentNo}`).value;
+		const modifyDate = new Date().toLocaleDateString(); //  현재 날짜 및 시간 (시분초)
+
+		// 서버로 수정된 값 전송
+		$.ajax({
+			url : '/comments/' + commentNo,
+			type: 'PUT',
+			contentType : 'application/json',
+			dataType : 'json',
+			data: JSON.stringify({
+				commentNo : commentNo,
+				commentContent: editContent,
+				modifyDate : modifyDate
+			}),
+			success: function (response){
+				// 수정 성공 시 새로운 내용으로 업데이트
+				const txtCon = document.querySelector(`#editForm-${commentNo} + .cont .txt_con`);
+				txtCon.textContent = editContent;
+				const modifyDateElement = document.querySelector(`#editForm-${commentNo} + .cont .modify_date`);
+				modifyDateElement.textContent = modifyDate; // 수정일자 업데이트
+				closeEditForm(commentNo); // 수정 폼 닫기
+				// 댓글 등록 성공 시 페이지 새로고침
+				window.location.reload();
+			},
+			error: function (request, status, error){
+				console.log(error);
+			}
+		});
+	}
+
+
+	// // 댓글 길이 카운팅
+	// function countingLength(commentContent){
+	// 	if(commentContent.value.legnth > 300){
+	// 		alert('댓글을 300자 이하로 입력해 주세요.');
+	// 		commentContent.value = commentContent.value.substring(0, 300);
+	// 		commentContent.focus();
+	// 	}
+	// 	document.getElementById('counter').innerText = commentContent.value.length + '/300자';
+	// }
+
+
+
+
+	// 댓글 저장
+	function comment_add() {
+
+		const commentContent = document.getElementById('commentContent').value.trim();
+		let loginUser = /*[[${session}]]*/"${loginUser}";
+		let boardNo = [[ ${info.boardNo}]]; // 게시글번호
+
+		console.log("session : " + loginUser.loginUser);
+		console.log("댓글 저장 시 게시판 번호: " + boardNo);
+
+		if (commentContent === '') {
+			alert('댓글을 입력해 주세요.'); // 댓글 내용이 비어있는 경우 경고 메시지 출력
+			return; // 댓글이 비어있으면 더 이상 진행하지 않고 함수 종료
+		} else {
+			// 서버에 넘길 데이터
+			const params = {
+				boardNo: boardNo,
+				commentContent: commentContent,
+				userId: loginUser
+			}
+
+			$.ajax({
+				url: '/comments/' + boardNo,
+				type: 'POST',
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+				data: JSON.stringify(params),
+				async: true,
+				success: function (response) {
+					if(response === 1)
+						commentContent.value = '';
+					comments();
+				},
+				error: function (request, status, error) {
+					console.log(error)
+				}
+			});
+		}
+	}
+
+	// 대댓글 등록
+	function submitReply(commentNo) {
+		const replyContent = document.getElementById(`replyContent-${commentNo}`).value.trim();
+
+		let loginUser = /*[[${session}]]*/"${session}";
+
+		// 로그인 관련 후처리
+		
+		const boardNo = [[ ${info.boardNo}]]; // 게시판 번호
+		console.log("대댓글 loginUser --> " + loginUser);
+		console.log("boardNo --> " + boardNo);
+		console.log("commentNo --> " + commentNo);
+
+		if (replyContent === '') {
+			alert('답글을 입력해 주세요.');
+			return;
+		}
+
+		const params = {
+			boardNo: boardNo,
+			parentNo: commentNo,
+			commentContent: replyContent,
+			userId: loginUser
+		};
+
+		$.ajax({
+			url: '/comments/' + boardNo + '/' + commentNo,
+			type: 'POST',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'json',
+			data: JSON.stringify(params),
+			success: function (response) {
+				if(response === 1)
+				document.getElementById(`replyContent-${commentNo}`).value = '';
+				showReplyForm(commentNo); // 답글 폼 닫기
+				comments(); // 댓글 새로고침
+			},
+			error: function (request, status, error) {
+				console.log(error);
+			}
+		});
+	}
+
+
+	// 댓글 삭제
+	function deleteComment(commentNo) {
+		let deleteConfirm = confirm("삭제 하시겠습니까?");
+
+		if (deleteConfirm) {
+			// 서버로 DELETE 요청 보내기
+			fetch('/comments/' + commentNo, {
+				headers: {
+					Accept: "application / json",
+				},
+				method: 'DELETE',
+			})
+					.then(response => response.json())
+					.then(data => {
+						// 삭제 성공 시
+						alert(data.message);
+						//새로운 댓글 목록을 가져와서 화면 갱신
+						comments();
+						getCommentCount();
+					})
+					.catch(error => {
+						// 오류 처리
+						console.error('ERROR :', error);
+						comments();
+
+					});
+		}
+	}
+
+	// 대댓글 삭제
+	function deleteReply(parentNo) {
+		let deleteConfirm = confirm("삭제 하시겠습니까?");
+
+		if (deleteConfirm) {
+		// 서버로 DELETE 요청 보내기
+		fetch('/comments/replies/' + parentNo, {
+			headers: {
+				Accept: "application / json",
+			},
+			method: 'DELETE',
+		})
+				.then(response => response.json())
+				.then(data => {
+					// 삭제 성공 시
+					alert(data.message);
+					// 새로운 댓글 목록을 가져와서 화면 갱신
+					comments();
+					getCommentCount();
+				})
+				.catch(error => {
+					// 오류 처리
+					console.error('Error:', error);
+					comments();
+
+				});
+		}
+	}
+
+</script>
 </div>
 </html>

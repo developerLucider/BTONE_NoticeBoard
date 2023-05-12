@@ -1,9 +1,9 @@
 package com.btone.web.home.domain.board.service;
 
-import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.btone.web.home.domain.board.dto.infoDTO;
 import com.btone.web.home.domain.board.mapper.BoardMapper;
 import com.btone.web.home.domain.board.vo.Board;
+import com.btone.web.home.domain.board.vo.BoardFile;
 import com.btone.web.home.domain.board.vo.BoardVO;
+import com.btone.web.home.domain.board.vo.Category;
 
 @Service
 public class BoardService {
@@ -26,64 +29,40 @@ public class BoardService {
 
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(BoardService.class);
-	
+
+	@Autowired
+	private FileService fileService;
+
 	@Value("${file.upload-location}")
-    String fileConfigPath;
+	String path;
 
-	public String addContent(Board board) {
-		
+	/**
+	 * 글 등록 서비스
+	 * 
+	 * @author sojin
+	 * @param board
+	 * @return
+	 * @throws Exception
+	 */
+	public int addContent(Board board) throws Exception {
+
 		logger.debug("addContent Service 진입");
-		String result = "";
-		
-		int mapper = boardMapper.addContent(board);
-		if(mapper >0) {
-			result = "글이 등록되었습니다.";
-		}else {
-			result = "등록에 실패했습니다.";
-		}
-	
-		return result;
-	}
-	
-	public List<BoardVO> selectBoard(int cNo){
-		logger.debug("--------------셀렉트 보드 서비스 진입");
-		
-		logger.debug("mapper 타기 전 카테고리 넘버 : {}", cNo);
-		
-		List<BoardVO> selectBoard = boardMapper.selectBoard(cNo);
-		
-		logger.debug("셀렉트 보드 서비스 결과 : {}", selectBoard);
-		
-		return selectBoard;
-	}
+		// textarea에서 enter로 입력된 내용이 select할때는 공백으로 처리되어 나오기 때문에
+		// html태그인 <br>로 바꿔서 DB에 저장.
+		String row = (board.getBoardContent()).replace("\r\n", "<br>");
+		board.setBoardContent(row);
 
-	//	글 상세보기
-	public Board getBoardInfo(int bno) {
-		Board info = boardMapper.getBoardInfo(bno);
+		int result = boardMapper.addContent(board); // 일단 게시물 DB 저장
+		logger.debug("boardNo : {}",board.getBoardNo());
+			
 		
-		return info;
+		String uploadPath = new File("").getAbsolutePath()+"\\"+path;  //업로드될 폴더경로
+		logger.debug("uploadPath >>>"+uploadPath);
 
-	}
-	
-	public Map saveFile(MultipartFile multipartFile) throws IOException{
-		
-
-        if (multipartFile.isEmpty()) {
-            return null;
-        }
-
-        String savedFileName = "";
-        // 1. 파일 저장 경로 설정 : 실제 서비스되는 위치(프로젝트 외부에 저장)
-        //  String uploadPath = fileConfigPath;  //현재는 절위의 yml에 지정 한 경로로 사용시 필요
-
-        String uploadPath = new File("").getAbsolutePath() + "\\"+fileConfigPath;  //absolutePath
-        logger.debug("uploadPath >>>"+uploadPath);
-        File Folder = new File(uploadPath);
-
-    	// 해당 디렉토리가 없다면 디렉토리를 생성.
-		if (!Folder.exists()) {
+		File folder = new File(uploadPath); // 미리 지정해놓은 경로에 파일 생성
+		if (!folder.exists()) { // 디렉토리가 존재하지 않다면 하나 만들기
 			try {
-				Folder.mkdir(); // 폴더 생성합니다. ("새폴더"만 생성)
+				folder.mkdir(); // 폴더 생성합니다. ("새폴더"만 생성)
 				logger.debug("폴더가 생성완료.");
 			} catch (Exception e) {
 				e.getStackTrace();
@@ -91,28 +70,60 @@ public class BoardService {
 		} else {
 			logger.debug("폴더가 이미 존재");
 		}
-        // 2. 원본 파일 이름 알아오기
-        String originalFileName = multipartFile.getOriginalFilename();
-       // file.get
-        logger.debug("originalFileName     >>  "+originalFileName);
-        // 3. 파일 이름 중복되지 않게 이름 변경(서버에 저장할 이름) UUID 사용  //해당정보로 insert 처리 후 파일 목록 조회 가능
-        UUID uuid = UUID.randomUUID();
-        savedFileName = uuid.toString()+"_"+ originalFileName;
-        logger.debug("savedFileName     >>  "+savedFileName);
+		logger.debug("files : {} ", board.getFiles());
+		
 
-        //mapper적용해서 db저장하기
+		for (MultipartFile f : board.getFiles()) { // 게시물에 포함된 파일 항목을 순회 
+			if (!f.isEmpty()) {   //파일이 있다면 
+				logger.info("file => {}", f.getOriginalFilename());
 
-        // 4. 파일 생성
-        File file1 = new File(uploadPath + savedFileName);
-        // 5. 서버로 전송
-        multipartFile.transferTo(file1);
-        Map resultMap = new HashMap();
-        resultMap.put("originalFileName", originalFileName);
-        resultMap.put("filePathName", uploadPath + savedFileName);
-        resultMap.put("serverfileName",savedFileName);
+				// HDD에 저장
+				String fileName = fileService.saveFile(f, uploadPath);  // 파일을 디렉토리에 업로드 
 
-        return resultMap;
+				// DB에 저장
+				BoardFile boardFile = new BoardFile();   // DB에 저장하기 위한 객체 생성 
+
+				boardFile.setBoardNo(board.getBoardNo());  // DB에 저장하면서 생긴 게시물의 번호 set
+				boardFile.setFileOriginName(f.getOriginalFilename());  // 원래 파일이름 set
+				boardFile.setFileSaveName(fileName);   // 디렉토리에 저장하면서 생긴 저장이름 set
+				
+				logger.debug("boardFile : {}", boardFile);
+				boardMapper.addFile(boardFile);    // DB에 저장
+			}
+		}
+
+		return result;
 	}
+
+	// 조회수
+	public int updateHits(int bno) {
+		logger.debug("조회수 증가 서비스 진입 : {}", bno);
+
+		int row = boardMapper.updateHits(bno);
+
+		return row;
+	}
+
+	public List<BoardVO> selectBoard(int cNo) {
+		logger.debug("--------------셀렉트 보드 서비스 진입");
+
+		logger.debug("mapper 타기 전 카테고리 넘버 : {}", cNo);
+
+		List<BoardVO> selectBoard = boardMapper.selectBoard(cNo);
+
+		logger.debug("셀렉트 보드 서비스 결과 : {}", selectBoard);
+
+		return selectBoard;
+	}
+
+	// 글 상세보기
+	public infoDTO getBoardInfo(int bno) {
+		infoDTO info = boardMapper.getBoardInfo(bno);
+
+		return info;
+
+	}
+
 	public byte[] download(String path) throws IOException {
 
 		byte[] fileByte = null;
@@ -125,4 +136,32 @@ public class BoardService {
 		return fileByte;
 
 	}
+
+	public List<Category> categoryList() {
+
+		return boardMapper.selectCategory();
+	}
+
+	public String updateContent(Board board) {
+		String result = "";
+
+		logger.debug("updateContent Service 진입");
+
+		// textarea에서 enter로 입력된 내용이 select할때는 공백으로 처리되어 나오기 때문에
+		// html태그인 <br>로 바꿔서 DB에 저장.
+		String row = ((String) board.getBoardContent()).replace("\r\n", "<br>");
+		board.setBoardContent(row);
+
+		int val = boardMapper.updateContent(board);
+
+		result = val > 0 ? "수정 되었습니다." : "수정 실패";
+
+		return result;
+	}
+
+	public void deleteContent(int boardNo) {
+		boardMapper.deleteContent(boardNo);
+
+	}
+
 }

@@ -3,6 +3,10 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
       
     pathmatch:
       matching-strategy: ant-path-matcher
@@ -10,6 +14,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.0.11:3306/board?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://localhost:3306/btwon?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: test
     password: btone
    
@@ -19,6 +24,7 @@ spring:
 mybatis:
   mapper-locations:
   - classpath:/mapper/**/*.xml
+  type-aliases-package: com.btone.web.home.domain.board.vo, com.btone.web.home.domain.board.dto, com.btone.web.home.domain.user.vo, com.btone.web.home.domain.user.dto
   config-location: classpath:/mybatis/mybatis-config.xml
 
   

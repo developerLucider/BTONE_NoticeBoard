@@ -1,0 +1,259 @@
+.comment-list {
+    margin-top: 20px;
+}
+
+/* 댓글 텍스트 부분 */
+.comment_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.comment_title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#comment_count {
+    font-size: 14px;
+    color: #888;
+}
+
+.comment {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    position: relative;
+}
+
+.comment .editForm {
+    display: none;
+    margin-top: 10px;
+}
+
+.comment .editForm textarea {
+    width: 100%;
+    height: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+.comment .editForm .btns {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #337ab7;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.comment .editForm .btns:hover {
+    background-color: #23527c;
+}
+
+.comment .editForm.active {
+    display: block;
+}
+
+
+.parent-comment {
+    border-bottom: 1px solid #ccc;
+    background-color: #ffffff;
+    margin-bottom: 10px; /* 부모 댓글과의 공백 */
+    padding-bottom: 5px; /* 부모 댓글의 아래쪽 내부 여백을 5px로 조정 */
+}
+
+.comment .writer {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.comment .comment-time {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 3px;
+}
+
+.comment .txt_con {
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.comment .func_btns {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.comment .btns {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #337ab7;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+.comment .btns:last-child {
+    margin-right: 0;
+}
+
+.comment .btns:hover {
+    background-color: #23527c;
+}
+
+
+.child-comment {
+    margin-left: 40px;
+    border-left: 2px solid #ccc;
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px; /* 자식 댓글과 부모 댓글의 공백 */
+}
+
+.child-comment .writer {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.child-comment .date {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 3px; /* 시간 텍스트와 댓글 내용 사이의 공백을 3px로 조정 */
+}
+
+.child-comment .txt_con {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.child-comment .func_btns {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.child-comment .btns {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #337ab7;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+.child-comment .btns:last-child {
+    margin-right: 0;
+}
+
+.child-comment .btns:hover {
+    background-color: #23527c;
+}
+
+/* 뎃글 등록 부분 */
+.cm_write {
+    margin-top: 20px;
+    margin-bottom: 20;
+}
+
+.cm_input {
+    display: flex;
+    align-items: center;
+}
+
+.cm_input textarea {
+    flex: 1;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.cm_input span {
+    display: inline-block;
+    position: relative;
+}
+
+.cm_input button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#counter {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* 답글 폼 */
+.reply-form-container {
+    margin-top: 10px;
+}
+
+.reply-form {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    resize: vertical;
+
+}
+
+.reply-form button {
+    margin-top: 10px;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.reply-form button:hover {
+    background-color: #23527c;
+}
+
+.reply-form .close-button {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #888;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.reply-form .close-button:hover {
+    background-color: #f5f5f5;
+}
+
+#comment_count {
+    font-size : 20px;
+}
+
+
+

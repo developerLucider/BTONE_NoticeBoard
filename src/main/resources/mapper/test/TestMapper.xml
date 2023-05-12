@@ -16,7 +16,7 @@
   
   <!--검색창  -->
   <select id="getSearch" resultType="com.btone.web.home.domain.board.vo.Board">
-  	SELECT * FROM   BOARD where ${type} = #{search}
+  	SELECT * FROM   BOARD where ${type} like concat ('%', #{search}, '%')
   </select>
   
   <select id="getCate" resultType="com.btone.web.home.domain.board.vo.Category">

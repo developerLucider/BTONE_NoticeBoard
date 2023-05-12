@@ -14,7 +14,7 @@ import lombok.Setter;
 public class BoardFile {
 
 	private int boardNo;
-	private String fileType;
+	private int fileNo;
 	private String fileOriginName;
-	private String fileName;
+	private String fileSaveName;
 }
